@@ -1,0 +1,115 @@
+%!TeX program = xelatex
+
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{pdflscape}
+\usepackage{polyglossia}
+\usepackage{amsmath} 
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{verbatim}
+\usepackage{csvsimple}
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\usepackage{longtable} 
+\usepackage[left=0.5cm, right=0.5cm, top=2cm, bottom=2cm]{geometry}
+
+\DeclareCaptionLabelFormat{blank}{}
+\captionsetup[lstlisting]{labelformat=blank}
+
+% Define the mystyle for code listings
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{white},   
+    commentstyle=\color{violet},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single
+}
+
+% Use the mystyle for code listings
+\lstset{style=mystyle}
+\setdefaultlanguage{greek}
+\setotherlanguages{english}
+
+% Use the newly installed Greek font
+\newfontfamily{\greekfont}{GFS Didot}
+\newfontfamily{\greekfontsf}{GFS Didot}
+\newfontfamily{\greekfonttt}{GFS Didot}
+
+\title{Προχωρημένα Θέματα Βάσεων Δεδομένων}
+\author{Μαρία Κοιλαλού | Μυρτώ Ορφανάκου\\
+\textit{AM:03119211 | ΑM:}} 
+
+\begin{document}
+
+\maketitle
+
+\vspace{3\baselineskip}
+
+\section{Create DataFrame}
+
+\begin{lstlisting}[language = Python]
+    schema1 = "`DR_NO` STRING, \
+    `Date Rptd` STRING, \
+    `DATE OCC` STRING, \
+    `TIME OCC` INTEGER, \
+    `AREA` INTEGER, \
+    `AREA NAME` STRING, \
+    `Rpt Dist No` INTEGER, \
+    `Part 1-2` INTEGER, \
+    `Crm Cd` INTEGER, \
+    `Crm Cd Desc` STRING, \
+    `Mocodes` STRING, \
+    `Vict Age` INTEGER, \
+    `Vict Sex` STRING, \
+    `Vict Descent` STRING, \
+    `Premis Cd` INTEGER, \
+    `Premis Desc` STRING, \
+    `Weapon Used Cd` INTEGER, \
+    `Weapon Desc` STRING, \
+    `Status` STRING, \
+    `Status Desc` STRING, \
+    `Crm Cd 1` INTEGER, \
+    `Crm Cd 2` INTEGER, \
+    `Crm Cd 3` INTEGER, \
+    `Crm Cd 4` INTEGER, \
+    `LOCATION` STRING, \
+    `Cross Street` STRING, \
+    `LAT` DOUBLE, \
+    `LON` DOUBLE"
+
+
+data1 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2010.csv", header=True, schema=schema1)
+data2 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2020.csv", header=True, schema=schema1)
+df = data1.union(data2).distinct()
+
+df = df.withColumn("Date Rptd", to_date(col("Date Rptd"), "MM/dd/yyyy hh:mm:ss a")) \
+ .withColumn("DATE OCC", to_date(col("DATE OCC"), "MM/dd/yyyy hh:mm:ss a"))
+
+df.count()
+print(f"Total number of rows: {df.count()}")
+
+df.printSchema()
+\end{lstlisting}
+
+\VerbatimInput[frame=single, fontsize=\small]{output/output1.csv}
+
+
+
+\end{document}

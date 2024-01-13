@@ -99,8 +99,6 @@ print(f"Total number of rows: {df.count()}")
 
 df.printSchema()
 
-df.show()
-
 # Get the string from the StringIO object
 captured_output1 = new_stdout1.getvalue()
 

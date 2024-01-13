@@ -1,0 +1,16 @@
++--------------------+-----+
+|        Vict Descent|count|
++--------------------+-----+
+|Hispanic/Latin/Me...| 1053|
+|               White|  610|
+|               Black|  349|
+|               Other|  272|
+|             Unknown|   71|
+|         Other Asian|   46|
+|              Korean|    4|
+|             Chinese|    1|
+|American Indian/A...|    1|
++--------------------+-----+
+
+Number of Executors: 4
+Q3 time: 12.506168365478516 seconds.

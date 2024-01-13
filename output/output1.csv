@@ -1,0 +1,58 @@
+spark session created
+Total number of rows: 2913595
+root
+ |-- DR_NO: string (nullable = true)
+ |-- Date Rptd: date (nullable = true)
+ |-- DATE OCC: date (nullable = true)
+ |-- TIME OCC: integer (nullable = true)
+ |-- AREA: integer (nullable = true)
+ |-- AREA NAME: string (nullable = true)
+ |-- Rpt Dist No: integer (nullable = true)
+ |-- Part 1-2: integer (nullable = true)
+ |-- Crm Cd: integer (nullable = true)
+ |-- Crm Cd Desc: string (nullable = true)
+ |-- Mocodes: string (nullable = true)
+ |-- Vict Age: integer (nullable = true)
+ |-- Vict Sex: string (nullable = true)
+ |-- Vict Descent: string (nullable = true)
+ |-- Premis Cd: integer (nullable = true)
+ |-- Premis Desc: string (nullable = true)
+ |-- Weapon Used Cd: integer (nullable = true)
+ |-- Weapon Desc: string (nullable = true)
+ |-- Status: string (nullable = true)
+ |-- Status Desc: string (nullable = true)
+ |-- Crm Cd 1: integer (nullable = true)
+ |-- Crm Cd 2: integer (nullable = true)
+ |-- Crm Cd 3: integer (nullable = true)
+ |-- Crm Cd 4: integer (nullable = true)
+ |-- LOCATION: string (nullable = true)
+ |-- Cross Street: string (nullable = true)
+ |-- LAT: double (nullable = true)
+ |-- LON: double (nullable = true)
+
++---------+----------+----------+--------+----+-----------+-----------+--------+------+--------------------+--------------------+--------+--------+------------+---------+--------------------+--------------+--------------------+------+------------+--------+--------+--------+--------+--------------------+--------------------+-------+---------+
+|    DR_NO| Date Rptd|  DATE OCC|TIME OCC|AREA|  AREA NAME|Rpt Dist No|Part 1-2|Crm Cd|         Crm Cd Desc|             Mocodes|Vict Age|Vict Sex|Vict Descent|Premis Cd|         Premis Desc|Weapon Used Cd|         Weapon Desc|Status| Status Desc|Crm Cd 1|Crm Cd 2|Crm Cd 3|Crm Cd 4|            LOCATION|        Cross Street|    LAT|      LON|
++---------+----------+----------+--------+----+-----------+-----------+--------+------+--------------------+--------------------+--------+--------+------------+---------+--------------------+--------------+--------------------+------+------------+--------+--------+--------+--------+--------------------+--------------------+-------+---------+
+|200613424|2020-08-02|2020-08-02|    2030|   6|  Hollywood|        657|       1|   761|     BRANDISH WEAPON|1402 2000 1813 18...|      34|       F|           H|      108|         PARKING LOT|           212|              BOTTLE|    AO| Adult Other|     761|     920|     930|     998|             WESTERN|             ROMAINE|34.0885|-118.3092|
+|121916349|2012-07-26|2012-07-26|    1400|  19|    Mission|       1972|       1|   440|THEFT PLAIN - PET...|                0344|       0|       M|           O|      403|          DRUG STORE|          NULL|                NULL|    IC| Invest Cont|     440|    NULL|    NULL|    NULL|15300    NORDHOFF...|                NULL|34.2355|-118.4654|
+|120308140|2012-03-06|2012-02-27|    1400|   3|  Southwest|        338|       2|   354|   THEFT OF IDENTITY|                0377|      49|       M|           H|      501|SINGLE FAMILY DWE...|          NULL|                NULL|    IC| Invest Cont|     354|    NULL|    NULL|    NULL|1300 W  30TH     ...|                NULL|34.0269|-118.2915|
+|122120242|2012-12-23|2012-08-15|    1000|  21|    Topanga|       2183|       1|   341|THEFT-GRAND ($950...|           0352 0344|      40|       F|           W|      501|SINGLE FAMILY DWE...|          NULL|                NULL|    IC| Invest Cont|     341|    NULL|    NULL|    NULL|22700    MACFARLA...|                NULL|34.1625|-118.6209|
+|121422858|2012-09-11|2012-09-09|    2100|  14|    Pacific|       1441|       1|   331|THEFT FROM MOTOR ...|                NULL|      63|       M|           W|      103|               ALLEY|          NULL|                NULL|    IC| Invest Cont|     331|    NULL|    NULL|    NULL|400 S  VENICE    ...|                NULL|33.9858|-118.4676|
+|120818367|2012-12-14|2012-12-14|    1225|   8|    West LA|        858|       1|   320| BURGLARY, ATTEMPTED|           1501 1601|      70|       F|           O|      502|MULTI-UNIT DWELLI...|          NULL|                NULL|    IC| Invest Cont|     320|    NULL|    NULL|    NULL|1600    LIVONIA  ...|                NULL|34.0508|-118.3865|
+|121227755|2012-12-15|2012-12-15|     745|  12|77th Street|       1239|       2|   740|VANDALISM - FELON...|0906 1402 0329 03...|       0|       M|           W|      502|MULTI-UNIT DWELLI...|          NULL|                NULL|    AO| Adult Other|     740|    NULL|    NULL|    NULL|700 W  60TH      ...|                NULL|33.9851|-118.2856|
+|122008042|2012-03-15|2012-03-15|    1630|  20|    Olympic|       2097|       2|   745|VANDALISM - MISDE...|           0329 1202|      69|       M|           H|      122|VEHICLE, PASSENGE...|          NULL|                NULL|    IC| Invest Cont|     745|    NULL|    NULL|    NULL|1700 W  20TH     ...|                NULL|34.0382|-118.2939|
+|120618265|2012-07-12|2012-07-12|    1230|   6|  Hollywood|        678|       2|   860|BATTERY WITH SEXU...|      0551 0319 0400|      49|       F|           H|      102|            SIDEWALK|           400|STRONG-ARM (HANDS...|    IC| Invest Cont|     860|    NULL|    NULL|    NULL|1000 N  SERRANO  ...|                NULL|34.0885|-118.3064|
+|121821328|2012-12-06|2012-12-02|    1200|  18|  Southeast|       1832|       1|   420|THEFT FROM MOTOR ...|                NULL|       0|    NULL|        NULL|      101|              STREET|          NULL|                NULL|    IC| Invest Cont|     420|    NULL|    NULL|    NULL|10500 S  SPRING  ...|                NULL| 33.941|-118.2762|
+|121425769|2012-10-15|2012-10-15|     520|  14|    Pacific|       1473|       1|   330|BURGLARY FROM VEH...|           1300 0344|      46|       M|           W|      108|         PARKING LOT|          NULL|                NULL|    IC| Invest Cont|     330|    NULL|    NULL|    NULL|LINCOLN          ...|MANCHESTER       ...|33.9598|-118.4193|
+|121312100|2012-05-15|2012-05-15|     745|  13|     Newton|       1321|       1|   510|    VEHICLE - STOLEN|                NULL|       0|    NULL|        NULL|      101|              STREET|          NULL|                NULL|    IC| Invest Cont|     510|    NULL|    NULL|    NULL|               OLIVE|          WASHINGTON|34.0302|-118.2689|
+|120120722|2012-10-01|2012-10-01|     100|   1|    Central|        139|       2|   354|   THEFT OF IDENTITY|           1822 0929|      32|       M|           W|      502|MULTI-UNIT DWELLI...|          NULL|                NULL|    IC| Invest Cont|     354|    NULL|    NULL|    NULL|900 E  2ND       ...|                NULL|34.0472|-118.2351|
+|120321203|2012-09-18|2012-06-02|    1200|   3|  Southwest|        362|       2|   649|DOCUMENT FORGERY ...|                0925|      34|       F|           B|      501|SINGLE FAMILY DWE...|          NULL|                NULL|    IC| Invest Cont|     649|    NULL|    NULL|    NULL|4500 W  MARTIN LU...|                NULL|34.0175| -118.346|
+|122018101|2012-10-08|2012-10-08|     230|  20|    Olympic|       2024|       1|   330|BURGLARY FROM VEH...|1307 0358 0344 16...|      21|       F|           H|      101|              STREET|          NULL|                NULL|    IC| Invest Cont|     330|    NULL|    NULL|    NULL|500 S  OXFORD    ...|                NULL|34.0654|-118.3079|
+|120818379|2012-12-14|2012-12-08|     900|   8|    West LA|        836|       2|   354|   THEFT OF IDENTITY|                1822|      51|       F|           H|      502|MULTI-UNIT DWELLI...|          NULL|                NULL|    IC| Invest Cont|     354|    NULL|    NULL|    NULL|1800    PELHAM   ...|                NULL|34.0519|-118.4319|
+|120407478|2012-03-22|2012-03-21|    1800|   4| Hollenbeck|        488|       1|   510|    VEHICLE - STOLEN|                NULL|       0|    NULL|        NULL|      101|              STREET|          NULL|                NULL|    IC| Invest Cont|     510|    NULL|    NULL|    NULL|1100 S  DACOTAH  ...|                NULL|34.0262| -118.209|
+|120808850|2012-04-26|2012-04-25|    2100|   8|    West LA|        839|       1|   341|THEFT-GRAND ($950...|                0344|      55|       M|           W|      203|      OTHER BUSINESS|          NULL|                NULL|    IC| Invest Cont|     341|    NULL|    NULL|    NULL|1800    AVENUE OF...|                NULL|34.0612|-118.4183|
+|120517004|2012-09-26|2012-09-26|    1745|   5|     Harbor|        566|       2|   813|CHILD ANNOYING (1...|1257 0361 0500 13...|       5|       M|           H|      119|  PORCH, RESIDENTIAL|          NULL|                NULL|    AA|Adult Arrest|     813|    NULL|    NULL|    NULL|900 S  MESA      ...|                NULL| 33.736|-118.2857|
+|120320399|2012-09-07|2012-09-07|    1915|   3|  Southwest|        373|       2|   740|VANDALISM - FELON...|           1402 0329|      65|       M|           B|      501|SINGLE FAMILY DWE...|          NULL|                NULL|    IC| Invest Cont|     740|     998|    NULL|    NULL|4000    DEGNAN   ...|                NULL|34.0117|-118.3314|
++---------+----------+----------+--------+----+-----------+-----------+--------+------+--------------------+--------------------+--------+--------+------------+---------+--------------------+--------------+--------------------+------+------------+--------+--------+--------+--------+--------------------+--------------------+-------+---------+
+only showing top 20 rows
+

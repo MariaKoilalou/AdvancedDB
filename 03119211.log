@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  15 JAN 2024 22:49
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  15 JAN 2024 22:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -714,7 +714,7 @@ Overfull \hbox (1.90828pt too wide) in paragraph at lines 377--384
 []\TU/GFSDidot(0)/m/n/10 Για το ζητούμενο 6 χρησιμοποιήθηκαν επιπλέον τα δεδομένα []LAPD_Police_Stations[]. Το Query 4 υλοποιήθηκε με DataFrame/SQL
  []
 
-[8] [9] [10] [11] (./output/output6_finalplan.csv [12] [13] [14] [15]) [16] (./output/output7_finalplan.csv) [17] (./output/output8_finalplan.csv) (./output/output9_finalplan.csv) (./output/output10_finalplan.csv)
+[8] [9] [10] [11] [12]
 The property list \polyglossia@langsetup contains the pairs (without outer
 braces):
 >  {latex/script}  =>  {latin}
@@ -765,12 +765,12 @@ braces):
 >  {english/babelname}  =>  {american}
 >  {english/localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {english/Localnumeral}  =>  {polyglossia@C@localnumeral}.
- [18]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 656.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 656.
+ [13]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 651.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 651.
  (./03119211.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 656.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 656.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 651.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 651.
 Package rerunfilecheck Info: File `03119211.out' has not changed.
 (rerunfilecheck)             Checksum: 5F07B56FCD6C9AA60EA73FE2670FE465;269.
 
@@ -779,12 +779,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 18886 strings out of 481772
- 358051 string characters out of 5936450
- 1521167 words of memory out of 5000000
- 35577 multiletter control sequences out of 15000+600000
+ 18822 strings out of 481772
+ 356937 string characters out of 5936450
+ 1189167 words of memory out of 5000000
+ 35528 multiletter control sequences out of 15000+600000
  536479 words of font info for 56 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  65i,6n,100p,837b,1818s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on 03119211.pdf (18 pages).
+Output written on 03119211.pdf (13 pages).

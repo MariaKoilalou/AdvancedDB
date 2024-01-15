@@ -21,6 +21,18 @@
 \DeclareCaptionLabelFormat{blank}{}
 \captionsetup[lstlisting]{labelformat=blank}
 
+\lstset{
+    basicstyle=\ttfamily\small, % Set the basic style of the listing
+    breaklines=true, % Enable line breaking
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}, % Indicator for line break
+    frame=single, % Frame around the code
+    caption={Your File Caption}, % Caption for the listing
+    captionpos=b, % Position of the caption (t for top, b for bottom)
+    numbers=left, % Line numbers on left
+    numberstyle=\tiny\color{gray}, % Style of line numbers
+    numbersep=5pt, % How far the line-numbers are from the code
+}
+
 % Define the mystyle for code listings
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{white},   
@@ -62,7 +74,37 @@
 
 \vspace{3\baselineskip}
 
-\section{Create DataFrame}
+\section*{Spark Session}
+
+\begin{lstlisting}[language = Python]
+    from pyspark.sql import SparkSession
+
+    def create_spark_session(num_executors):
+       
+       spark = SparkSession.builder \
+            .appName("ADV DATABASES") \
+            .config("spark.executor.instances", str(num_executors)) \
+            .config("spark.executor.cores", "1") \
+            .config("spark.executor.memory", "1g") \
+            .config("spark.driver.memory", "4g") \
+            .config("spark.cleaner.periodicGC.interval", "1min") \
+            .config("spark.memory.offHeap.enabled", "true") \
+            .config("spark.memory.offHeap.size", "1g") \
+            .config("spark.default.parallelism", "4") \
+            .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer") \
+            .config("spark.dynamicAllocation.enabled", "true") \
+            .config("spark.dynamicAllocation.minExecutors", "2") \
+            .config("spark.dynamicAllocation.maxExecutors", "4") \
+            .getOrCreate()
+          
+       return spark
+\end{lstlisting}
+
+\begin{lstlisting}[language = Python]
+    spark = create_spark_session(4)
+    print("spark session created")  
+\end{lstlisting}
+\section*{Create DataFrame}
 
 \begin{lstlisting}[language = Python]
     schema1 = "`DR_NO` STRING, \
@@ -94,9 +136,6 @@
                `LAT` DOUBLE, \
                `LON` DOUBLE"
 
-    schema2 = "`Zip Code` INTEGER, \
-                `Community` STRING, \
-                `Estimated Median Income` STRING"
 
     data1 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2010.csv", header=True, schema=schema1)
     data2 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2020.csv", header=True, schema=schema1)
@@ -114,7 +153,7 @@
 
 \VerbatimInput[frame=single, fontsize=\small]{output/output1.csv}
 
-\section{Query 1}
+\section*{Query 1}
 
 \subsection*{Dataframe API}
 
@@ -229,6 +268,32 @@
     schema3 = "`LAT` DOUBLE, \
                `LON` DOUBLE, \
                `ZIPcode` INTEGER"
+
+    schema2 = "`Zip Code` INTEGER, \
+	           `Community` STRING, \
+	           `Estimated Median Income` STRING"
+
+    descent_mapping = {
+        'A': 'Other Asian',
+        'B': 'Black',
+        'C': 'Chinese',
+        'D': 'Cambodian',
+        'F': 'Filipino',
+        'G': 'Guamanian',
+        'H': 'Hispanic/Latin/Mexican',
+        'I': 'American Indian/Alaskan Native',
+        'J': 'Japanese',
+        'K': 'Korean',
+        'L': 'Laotian',
+        'O': 'Other',
+        'P': 'Pacific Islander',
+        'S': 'Samoan',
+        'U': 'Hawaiian',
+        'V': 'Vietnamese',
+        'W': 'White',
+        'X': 'Unknown',
+        'Z': 'Asian Indian'
+    }
     
     data3 = data3.withColumn("Estimated Median Income", regexp_replace(col("Estimated Median Income"), "\$", ""))
     data3 = data3.withColumn("Estimated Median Income", regexp_replace(col("Estimated Median Income"), ",", "").cast("float"))
@@ -252,20 +317,20 @@
 \begin{lstlisting}
     def query3 (crime_2015, data3, revgecoding):
 
-    crime_zip = crime_2015.join(revgecoding, ["LAT", "LON"], "left")
+        crime_zip = crime_2015.join(revgecoding, ["LAT", "LON"], "left")
 
-    best3_zip = data3.orderBy("Estimated Median Income", ascending=False).limit(3)
-    worst3_zip = data3.orderBy("Estimated Median Income", ascending=True).limit(3)
-    
-    best3_zip_list = [row['Zip Code'] for row in best3_zip.collect()] 
-    worst3_zip_list = [row['Zip Code'] for row in worst3_zip.collect()]
+        best3_zip = data3.orderBy("Estimated Median Income", ascending=False).limit(3)
+        worst3_zip = data3.orderBy("Estimated Median Income", ascending=True).limit(3)
+        
+        best3_zip_list = [row['Zip Code'] for row in best3_zip.collect()] 
+        worst3_zip_list = [row['Zip Code'] for row in worst3_zip.collect()]
 
-    crimes = crime_zip.filter(
-        (col("ZIPcode").isin(best3_zip_list)) | 
-        (col("ZIPcode").isin(worst3_zip_list))
-    )
-    
-    vict_descent_count = crimes.groupBy("Vict Descent").count().orderBy("count", ascending=False)
+        crimes = crime_zip.filter(
+            (col("ZIPcode").isin(best3_zip_list)) | 
+            (col("ZIPcode").isin(worst3_zip_list))
+        )
+        
+        vict_descent_count = crimes.groupBy("Vict Descent").count().orderBy("count", ascending=False)
 
 
     return vict_descent_count
@@ -282,7 +347,16 @@
 \section*{Query 4}
 
 \begin{lstlisting}[language = Python]
+
+    schema4 = "`X` DOUBLE, \
+               `Y` DOUBLE, \
+               `FID` INTEGER, \
+               `DIVISION` STRING, \
+               `LOCATION` STRING, \
+               `PREC` INTEGER"
+
     data5 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/LAPD_Police_Stations.csv", header=True, schema=schema4)
+
 
 \end{lstlisting}
     
@@ -291,125 +365,295 @@
 \begin{lstlisting}{language = Python}
     def query4(df, data5):
 
-    def haversine(lat1, lon1, lat2, lon2):
-        # Radius of the Earth in kilometers
-        R = 6371.0
+        def haversine(lat1, lon1, lat2, lon2):
+            # Radius of the Earth in kilometers
+            R = 6371.0
 
-        lat1_rad = math.radians(lat1)
-        lon1_rad = math.radians(lon1)
-        lat2_rad = math.radians(lat2)
-        lon2_rad = math.radians(lon2)
+            lat1_rad = math.radians(lat1)
+            lon1_rad = math.radians(lon1)
+            lat2_rad = math.radians(lat2)
+            lon2_rad = math.radians(lon2)
 
-        dlat = lat2_rad - lat1_rad
-        dlon = lon2_rad - lon1_rad
+            dlat = lat2_rad - lat1_rad
+            dlon = lon2_rad - lon1_rad
 
-        a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon / 2)**2
-        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+            a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon / 2)**2
+            c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-        distance = R * c
-        return distance
+            distance = R * c
+            return distance
 
-    def get_distance(lat1, long1, lat2, long2):
+        def get_distance(lat1, long1, lat2, long2):
 
-        def is_valid_coordinate(lat, lon):
-            return -90 <= lat <= 90 and -180 <= lon <= 180
-
-
-        if not is_valid_coordinate(lat1, long1) or not is_valid_coordinate(lat2, long2):
-            # Print the invalid rows
-            print(f"Invalid row: lat1={lat1}, long1={long1}, lat2={lat2}, long2={long2}")
-            return -1
-
-        try:
-            return haversine(lat1, long1, lat2, long2)
-        except ValueError:
-            return -1
-
-    df_4a = df.filter(
-        (df["AREA NAME"] != "Null Island") &
-        (df["Weapon Used Cd"].substr(1, 1) == "1")
-    )
-
-    df_4b = df.filter(
-        (df["AREA NAME"] != "Null Island") &
-        (df["Weapon Used Cd"].isNotNull())
-    )
-
-    joined_df_4a = df_4a.join(data5, df_4a["AREA"] == data5["PREC"])
-    joined_df_4b = df_4b.join(data5, df_4b["AREA"] == data5["PREC"])
-
-    distance_udf = udf(get_distance)
-
-    distance_df_4a = joined_df_4a.withColumn(
-        "DISTANCE",
-        distance_udf(
-            F.col("LAT"), F.col("LON"),
-            F.col("Y"), F.col("X")
-        ).cast("double")
-    )
-
-    distance_df_4b = joined_df_4b.withColumn(
-        "DISTANCE",
-        distance_udf(
-            F.col("LAT"), F.col("LON"),
-            F.col("Y"), F.col("X")
-        ).cast("double")
-    )
-
-    query_4_1a = distance_df_4a.groupBy("Year").agg(
-        F.count("*").alias("num_crimes"),
-        F.avg("DISTANCE").alias("average_distance")
-    ).orderBy("Year")
-
-    query_4_1b = distance_df_4b.groupBy("DIVISION").agg(
-        F.count("*").alias("num_crimes"),
-        F.avg("DISTANCE").alias("average_distance")
-    ).orderBy(F.desc("num_crimes"))
-
-    print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
-    print("(a)")
-    query_4_1a.show() 
-    print("(b)")
-    query_4_1b.show() 
-
-    cross_joined_df = df.crossJoin(data5.withColumnRenamed("LAT", "Y").withColumnRenamed("LON", "X"))
-
-    cross_joined_df = cross_joined_df.withColumn(
-        "DISTANCE",
-        distance_udf(col("LAT"), col("LON"), col("Y"), col("X")).cast("double")
-    )
-
-    windowSpec = Window.partitionBy("DR_NO").orderBy("DISTANCE")
-
-    nearest_station_df = cross_joined_df.withColumn(
-        "row_num",
-        F.row_number().over(windowSpec)
-    ).filter(col("row_num") == 1).drop("row_num")
-
-    cross_df_4a = df_4a.join(nearest_station_df.drop("Year"), "DR_NO")
-    cross_df_4b = df_4b.join(nearest_station_df.drop("Year"), "DR_NO")
-
-    query_4_2a = cross_df_4a.groupBy("Year").agg(
-        F.count("*").alias("num_crimes"),
-        F.avg("DISTANCE").alias("average_distance")
-    ).orderBy("Year")
-
-    query_4_2b = cross_df_4b.groupBy("DIVISION").agg(
-        F.count("*").alias("num_crimes"),
-        F.avg("DISTANCE").alias("average_distance")
-    ).orderBy(F.desc("num_crimes"))
+            def is_valid_coordinate(lat, lon):
+                return -90 <= lat <= 90 and -180 <= lon <= 180
 
 
-    print("Απόσταση από το πλησιέστερο αστυνομικό τμήμα:")
-    print("(a)")
-    query_4_2a.show()
-    print("(b)")
-    query_4_2b.show()
+            if not is_valid_coordinate(lat1, long1) or not is_valid_coordinate(lat2, long2):
+                # Print the invalid rows
+                print(f"Invalid row: lat1={lat1}, long1={long1}, lat2={lat2}, long2={long2}")
+                return -1
+
+            try:
+                return haversine(lat1, long1, lat2, long2)
+            except ValueError:
+                return -1
+
+        df_4a = df.filter(
+            (df["AREA NAME"] != "Null Island") &
+            (df["Weapon Used Cd"].substr(1, 1) == "1")
+        )
+
+        df_4b = df.filter(
+            (df["AREA NAME"] != "Null Island") &
+            (df["Weapon Used Cd"].isNotNull())
+        )
+
+        joined_df_4a = df_4a.join(data5, df_4a["AREA"] == data5["PREC"])
+        joined_df_4b = df_4b.join(data5, df_4b["AREA"] == data5["PREC"])
+
+        distance_udf = udf(get_distance)
+
+        distance_df_4a = joined_df_4a.withColumn(
+            "DISTANCE",
+            distance_udf(
+                F.col("LAT"), F.col("LON"),
+                F.col("Y"), F.col("X")
+            ).cast("double")
+        )
+
+        distance_df_4b = joined_df_4b.withColumn(
+            "DISTANCE",
+            distance_udf(
+                F.col("LAT"), F.col("LON"),
+                F.col("Y"), F.col("X")
+            ).cast("double")
+        )
+
+        query_4_1a = distance_df_4a.groupBy("Year").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy("Year")
+
+        query_4_1b = distance_df_4b.groupBy("DIVISION").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy(F.desc("num_crimes"))
+
+        print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
+        print("(a)")
+        query_4_1a.show() 
+        print("(b)")
+        query_4_1b.show() 
+
+        cross_joined_df = df.crossJoin(data5.withColumnRenamed("LAT", "Y").withColumnRenamed("LON", "X"))
+
+        cross_joined_df = cross_joined_df.withColumn(
+            "DISTANCE",
+            distance_udf(col("LAT"), col("LON"), col("Y"), col("X")).cast("double")
+        )
+
+        windowSpec = Window.partitionBy("DR_NO").orderBy("DISTANCE")
+
+        nearest_station_df = cross_joined_df.withColumn(
+            "row_num",
+            F.row_number().over(windowSpec)
+        ).filter(col("row_num") == 1).drop("row_num")
+
+        cross_df_4a = df_4a.join(nearest_station_df.drop("Year"), "DR_NO")
+        cross_df_4b = df_4b.join(nearest_station_df.drop("Year"), "DR_NO")
+
+        query_4_2a = cross_df_4a.groupBy("Year").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy("Year")
+
+        query_4_2b = cross_df_4b.groupBy("DIVISION").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy(F.desc("num_crimes"))
+
+
+        print("Απόσταση από το πλησιέστερο αστυνομικό τμήμα:")
+        print("(a)")
+        query_4_2a.show()
+        print("(b)")
+        query_4_2b.show()
 \end{lstlisting}
 
 \VerbatimInput[frame=single, fontsize=\small]{output/output5.csv}
 
-\section{hint \& explain}
+\section*{hint \& explain}
 
-\
+\subsection*{Query 3}
+
+\begin{lstlisting}
+    join_strategies = ["broadcast", "merge", "shuffle_hash", "shuffle_replicate_nl"]
+
+    for strategy in join_strategies:
+        print(f"Executing query with {strategy} join strategy")
+        query3_hne_results = query3_hne.query3(crime_2015, data3, revgecoding, strategy)
+        query3_hne_results.show()
+\end{lstlisting}
+
+\begin{lstlisting}
+    def query3(crime_2015, data3, revgecoding, join_strategy):
+
+        crime_zip = crime_2015.join(revgecoding.hint(join_strategy), ["LAT", "LON"], "left")
+
+        best3_zip = data3.orderBy("Estimated Median Income", ascending=False).limit(3)
+        worst3_zip = data3.orderBy("Estimated Median Income", ascending=True).limit(3)
+
+        best3_zip_list = [row['Zip Code'] for row in best3_zip.collect()]
+        worst3_zip_list = [row['Zip Code'] for row in worst3_zip.collect()]
+
+        crimes = crime_zip.filter(
+            (col("ZIPcode").isin(best3_zip_list)) |
+            (col("ZIPcode").isin(worst3_zip_list))
+        )
+
+        vict_descent_count = crimes.groupBy("Vict Descent").count().orderBy("count", ascending=False)
+
+        vict_descent_count.explain()
+
+        return vict_descent_count
+\end{lstlisting}
+
+\lstinputlisting{output/output6_finalplan.csv} % Path to your file
+
+\subsection*{Query 4}
+
+\begin{lstlisting}[language = Python]
+    def query4(df, data5, join_strategy):
+
+        def haversine(lat1, lon1, lat2, lon2):
+            # Radius of the Earth in kilometers
+            R = 6371.0
+
+            lat1_rad = math.radians(lat1)
+            lon1_rad = math.radians(lon1)
+            lat2_rad = math.radians(lat2)
+            lon2_rad = math.radians(lon2)
+
+            dlat = lat2_rad - lat1_rad
+            dlon = lon2_rad - lon1_rad
+
+            a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon / 2)**2
+            c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+            distance = R * c
+            return distance
+
+        def get_distance(lat1, long1, lat2, long2):
+
+            def is_valid_coordinate(lat, lon):
+                return -90 <= lat <= 90 and -180 <= lon <= 180
+
+
+            if not is_valid_coordinate(lat1, long1) or not is_valid_coordinate(lat2, long2):
+                # Print the invalid rows
+                print(f"Invalid row: lat1={lat1}, long1={long1}, lat2={lat2}, long2={long2}")
+                return -1
+
+            try:
+                return haversine(lat1, long1, lat2, long2)
+            except ValueError:
+                return -1
+
+        df_4a = df.filter(
+            (df["AREA NAME"] != "Null Island") &
+            (df["Weapon Used Cd"].substr(1, 1) == "1")
+        )
+
+        df_4b = df.filter(
+            (df["AREA NAME"] != "Null Island") &
+            (df["Weapon Used Cd"].isNotNull())
+        )
+
+        joined_df_4a = df_4a.join(data5.hint(join_strategy), df_4a["AREA"] == data5["PREC"])
+        joined_df_4b = df_4b.join(data5.hint(join_strategy), df_4b["AREA"] == data5["PREC"])
+
+        joined_df_4a.explain()
+        joined_df_4b.explain()
+
+        distance_udf = udf(get_distance)
+
+        distance_df_4a = joined_df_4a.withColumn(
+            "DISTANCE",
+            distance_udf(
+                F.col("LAT"), F.col("LON"),
+                F.col("Y"), F.col("X")
+            ).cast("double")
+        )
+
+        distance_df_4b = joined_df_4b.withColumn(
+            "DISTANCE",
+            distance_udf(
+                F.col("LAT"), F.col("LON"),
+                F.col("Y"), F.col("X")
+            ).cast("double")
+        )
+
+        query_4_1a = distance_df_4a.groupBy("Year").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy("Year")
+
+        query_4_1b = distance_df_4b.groupBy("DIVISION").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy(F.desc("num_crimes"))
+
+        query_4_1a.explain()
+        query_4_1b.explain()
+
+        print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
+        print("(a)")
+        query_4_1a.show()
+        print("(b)")
+        query_4_1b.show()
+
+        cross_joined_df = df.crossJoin(data5.withColumnRenamed("LAT", "Y").withColumnRenamed("LON", "X"))
+
+
+        cross_joined_df = cross_joined_df.withColumn(
+            "DISTANCE",
+            distance_udf(col("LAT"), col("LON"), col("Y"), col("X")).cast("double")
+        )
+
+        windowSpec = Window.partitionBy("DR_NO").orderBy("DISTANCE")
+
+        nearest_station_df = cross_joined_df.withColumn(
+            "row_num",
+            F.row_number().over(windowSpec)
+        ).filter(col("row_num") == 1).drop("row_num")
+
+        cross_df_4a = df_4a.join(nearest_station_df.drop("Year"), "DR_NO")
+        cross_df_4b = df_4b.join(nearest_station_df.drop("Year"), "DR_NO")
+        
+        query_4_2a = cross_df_4a.groupBy("Year").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy("Year")
+
+        query_4_2b = cross_df_4b.groupBy("DIVISION").agg(
+            F.count("*").alias("num_crimes"),
+            F.avg("DISTANCE").alias("average_distance")
+        ).orderBy(F.desc("num_crimes"))
+
+        print("Απόσταση από το πλησιέστερο αστυνομικό τμήμα:")
+        print("(a)")
+        query_4_2a.show()
+        print("(b)")
+        query_4_2b.show()
+
+\end{lstlisting}
+
+\lstinputlisting{output/output7_finalplan.csv} % Path to your file
+\lstinputlisting{output/output8_finalplan.csv} % Path to your file
+\lstinputlisting{output/output9_finalplan.csv} % Path to your file
+\lstinputlisting{output/output10_finalplan.csv} % Path to your file
+
+
+
 \end{document}

@@ -1,0 +1,310 @@
+Executing query with broadcast join strategy
+== Physical Plan ==
+AdaptiveSparkPlan (53)
++- == Final Plan ==
+   TakeOrderedAndProject (31)
+   +- * HashAggregate (30)
+      +- AQEShuffleRead (29)
+         +- ShuffleQueryStage (28), Statistics(sizeInBytes=1016.0 B, rowCount=28)
+            +- Exchange (27)
+               +- * HashAggregate (26)
+                  +- * Project (25)
+                     +- * BroadcastHashJoin Inner BuildRight (24)
+                        :- * Project (12)
+                        :  +- BatchEvalPython (11)
+                        :     +- * HashAggregate (10)
+                        :        +- AQEShuffleRead (9)
+                        :           +- ShuffleQueryStage (8), Statistics(sizeInBytes=88.4 MiB, rowCount=1.96E+5)
+                        :              +- Exchange (7)
+                        :                 +- * HashAggregate (6)
+                        :                    +- Union (5)
+                        :                       :- * Filter (2)
+                        :                       :  +- Scan csv  (1)
+                        :                       +- * Filter (4)
+                        :                          +- Scan csv  (3)
+                        +- BroadcastQueryStage (23), Statistics(sizeInBytes=8.0 MiB, rowCount=682)
+                           +- BroadcastExchange (22)
+                              +- * Project (21)
+                                 +- * Filter (20)
+                                    +- * HashAggregate (19)
+                                       +- AQEShuffleRead (18)
+                                          +- ShuffleQueryStage (17), Statistics(sizeInBytes=1475.8 KiB, rowCount=3.78E+4)
+                                             +- Exchange (16)
+                                                +- * HashAggregate (15)
+                                                   +- * Filter (14)
+                                                      +- Scan csv  (13)
++- == Initial Plan ==
+   TakeOrderedAndProject (52)
+   +- HashAggregate (51)
+      +- Exchange (50)
+         +- HashAggregate (49)
+            +- Project (48)
+               +- BroadcastHashJoin Inner BuildRight (47)
+                  :- Project (39)
+                  :  +- BatchEvalPython (38)
+                  :     +- HashAggregate (37)
+                  :        +- Exchange (36)
+                  :           +- HashAggregate (35)
+                  :              +- Union (34)
+                  :                 :- Filter (32)
+                  :                 :  +- Scan csv  (1)
+                  :                 +- Filter (33)
+                  :                    +- Scan csv  (3)
+                  +- BroadcastExchange (46)
+                     +- Project (45)
+                        +- Filter (44)
+                           +- HashAggregate (43)
+                              +- Exchange (42)
+                                 +- HashAggregate (41)
+                                    +- Filter (40)
+                                       +- Scan csv  (13)
+
++--------------------+-----+
+|        Vict Descent|count|
++--------------------+-----+
+|Hispanic/Latin/Me...| 1053|
+|               White|  610|
+|               Black|  349|
+|               Other|  272|
+|             Unknown|   71|
+|         Other Asian|   46|
+|              Korean|    4|
+|             Chinese|    1|
+|American Indian/A...|    1|
++--------------------+-----+
+
+Executing query with merge join strategy
+== Physical Plan ==
+AdaptiveSparkPlan (62)
++- == Final Plan ==
+   TakeOrderedAndProject (37)
+   +- * HashAggregate (36)
+      +- AQEShuffleRead (35)
+         +- ShuffleQueryStage (34), Statistics(sizeInBytes=584.0 B, rowCount=16)
+            +- Exchange (33)
+               +- * HashAggregate (32)
+                  +- * Project (31)
+                     +- * SortMergeJoin Inner (30)
+                        :- * Sort (16)
+                        :  +- AQEShuffleRead (15)
+                        :     +- ShuffleQueryStage (14), Statistics(sizeInBytes=8.7 MiB, rowCount=1.96E+5)
+                        :        +- Exchange (13)
+                        :           +- * Project (12)
+                        :              +- BatchEvalPython (11)
+                        :                 +- * HashAggregate (10)
+                        :                    +- AQEShuffleRead (9)
+                        :                       +- ShuffleQueryStage (8), Statistics(sizeInBytes=88.4 MiB, rowCount=1.96E+5)
+                        :                          +- Exchange (7)
+                        :                             +- * HashAggregate (6)
+                        :                                +- Union (5)
+                        :                                   :- * Filter (2)
+                        :                                   :  +- Scan csv  (1)
+                        :                                   +- * Filter (4)
+                        :                                      +- Scan csv  (3)
+                        +- * Sort (29)
+                           +- AQEShuffleRead (28)
+                              +- ShuffleQueryStage (27), Statistics(sizeInBytes=16.0 KiB, rowCount=682)
+                                 +- Exchange (26)
+                                    +- * Project (25)
+                                       +- * Filter (24)
+                                          +- * HashAggregate (23)
+                                             +- AQEShuffleRead (22)
+                                                +- ShuffleQueryStage (21), Statistics(sizeInBytes=1475.8 KiB, rowCount=3.78E+4)
+                                                   +- Exchange (20)
+                                                      +- * HashAggregate (19)
+                                                         +- * Filter (18)
+                                                            +- Scan csv  (17)
++- == Initial Plan ==
+   TakeOrderedAndProject (61)
+   +- HashAggregate (60)
+      +- Exchange (59)
+         +- HashAggregate (58)
+            +- Project (57)
+               +- SortMergeJoin Inner (56)
+                  :- Sort (47)
+                  :  +- Exchange (46)
+                  :     +- Project (45)
+                  :        +- BatchEvalPython (44)
+                  :           +- HashAggregate (43)
+                  :              +- Exchange (42)
+                  :                 +- HashAggregate (41)
+                  :                    +- Union (40)
+                  :                       :- Filter (38)
+                  :                       :  +- Scan csv  (1)
+                  :                       +- Filter (39)
+                  :                          +- Scan csv  (3)
+                  +- Sort (55)
+                     +- Exchange (54)
+                        +- Project (53)
+                           +- Filter (52)
+                              +- HashAggregate (51)
+                                 +- Exchange (50)
+                                    +- HashAggregate (49)
+                                       +- Filter (48)
+                                          +- Scan csv  (17)
+
++--------------------+-----+
+|        Vict Descent|count|
++--------------------+-----+
+|Hispanic/Latin/Me...| 1053|
+|               White|  610|
+|               Black|  349|
+|               Other|  272|
+|             Unknown|   71|
+|         Other Asian|   46|
+|              Korean|    4|
+|American Indian/A...|    1|
+|             Chinese|    1|
++--------------------+-----+
+
+Executing query with shuffle_hash join strategy
+== Physical Plan ==
+AdaptiveSparkPlan (58)
++- == Final Plan ==
+   TakeOrderedAndProject (35)
+   +- * HashAggregate (34)
+      +- AQEShuffleRead (33)
+         +- ShuffleQueryStage (32), Statistics(sizeInBytes=584.0 B, rowCount=16)
+            +- Exchange (31)
+               +- * HashAggregate (30)
+                  +- * Project (29)
+                     +- * ShuffledHashJoin Inner BuildRight (28)
+                        :- AQEShuffleRead (15)
+                        :  +- ShuffleQueryStage (14), Statistics(sizeInBytes=8.7 MiB, rowCount=1.96E+5)
+                        :     +- Exchange (13)
+                        :        +- * Project (12)
+                        :           +- BatchEvalPython (11)
+                        :              +- * HashAggregate (10)
+                        :                 +- AQEShuffleRead (9)
+                        :                    +- ShuffleQueryStage (8), Statistics(sizeInBytes=88.4 MiB, rowCount=1.96E+5)
+                        :                       +- Exchange (7)
+                        :                          +- * HashAggregate (6)
+                        :                             +- Union (5)
+                        :                                :- * Filter (2)
+                        :                                :  +- Scan csv  (1)
+                        :                                +- * Filter (4)
+                        :                                   +- Scan csv  (3)
+                        +- AQEShuffleRead (27)
+                           +- ShuffleQueryStage (26), Statistics(sizeInBytes=16.0 KiB, rowCount=682)
+                              +- Exchange (25)
+                                 +- * Project (24)
+                                    +- * Filter (23)
+                                       +- * HashAggregate (22)
+                                          +- AQEShuffleRead (21)
+                                             +- ShuffleQueryStage (20), Statistics(sizeInBytes=1475.8 KiB, rowCount=3.78E+4)
+                                                +- Exchange (19)
+                                                   +- * HashAggregate (18)
+                                                      +- * Filter (17)
+                                                         +- Scan csv  (16)
++- == Initial Plan ==
+   TakeOrderedAndProject (57)
+   +- HashAggregate (56)
+      +- Exchange (55)
+         +- HashAggregate (54)
+            +- Project (53)
+               +- ShuffledHashJoin Inner BuildRight (52)
+                  :- Exchange (44)
+                  :  +- Project (43)
+                  :     +- BatchEvalPython (42)
+                  :        +- HashAggregate (41)
+                  :           +- Exchange (40)
+                  :              +- HashAggregate (39)
+                  :                 +- Union (38)
+                  :                    :- Filter (36)
+                  :                    :  +- Scan csv  (1)
+                  :                    +- Filter (37)
+                  :                       +- Scan csv  (3)
+                  +- Exchange (51)
+                     +- Project (50)
+                        +- Filter (49)
+                           +- HashAggregate (48)
+                              +- Exchange (47)
+                                 +- HashAggregate (46)
+                                    +- Filter (45)
+                                       +- Scan csv  (16)
+
++--------------------+-----+
+|        Vict Descent|count|
++--------------------+-----+
+|Hispanic/Latin/Me...| 1053|
+|               White|  610|
+|               Black|  349|
+|               Other|  272|
+|             Unknown|   71|
+|         Other Asian|   46|
+|              Korean|    4|
+|             Chinese|    1|
+|American Indian/A...|    1|
++--------------------+-----+
+
+Executing query with shuffle_replicate_nl join strategy
+== Physical Plan ==
+AdaptiveSparkPlan (50)
++- == Final Plan ==
+   TakeOrderedAndProject (29)
+   +- * HashAggregate (28)
+      +- AQEShuffleRead (27)
+         +- ShuffleQueryStage (26), Statistics(sizeInBytes=3.5 KiB, rowCount=100)
+            +- Exchange (25)
+               +- * HashAggregate (24)
+                  +- * Project (23)
+                     +- CartesianProduct Inner (22)
+                        :- * Project (12)
+                        :  +- BatchEvalPython (11)
+                        :     +- * HashAggregate (10)
+                        :        +- AQEShuffleRead (9)
+                        :           +- ShuffleQueryStage (8), Statistics(sizeInBytes=88.4 MiB, rowCount=1.96E+5)
+                        :              +- Exchange (7)
+                        :                 +- * HashAggregate (6)
+                        :                    +- Union (5)
+                        :                       :- * Filter (2)
+                        :                       :  +- Scan csv  (1)
+                        :                       +- * Filter (4)
+                        :                          +- Scan csv  (3)
+                        +- * Project (21)
+                           +- * Filter (20)
+                              +- * HashAggregate (19)
+                                 +- AQEShuffleRead (18)
+                                    +- ShuffleQueryStage (17), Statistics(sizeInBytes=1475.8 KiB, rowCount=3.78E+4)
+                                       +- Exchange (16)
+                                          +- * HashAggregate (15)
+                                             +- * Filter (14)
+                                                +- Scan csv  (13)
++- == Initial Plan ==
+   TakeOrderedAndProject (49)
+   +- HashAggregate (48)
+      +- Exchange (47)
+         +- HashAggregate (46)
+            +- Project (45)
+               +- CartesianProduct Inner (44)
+                  :- Project (37)
+                  :  +- BatchEvalPython (36)
+                  :     +- HashAggregate (35)
+                  :        +- Exchange (34)
+                  :           +- HashAggregate (33)
+                  :              +- Union (32)
+                  :                 :- Filter (30)
+                  :                 :  +- Scan csv  (1)
+                  :                 +- Filter (31)
+                  :                    +- Scan csv  (3)
+                  +- Project (43)
+                     +- Filter (42)
+                        +- HashAggregate (41)
+                           +- Exchange (40)
+                              +- HashAggregate (39)
+                                 +- Filter (38)
+                                    +- Scan csv  (13)
+
++--------------------+-----+
+|        Vict Descent|count|
++--------------------+-----+
+|Hispanic/Latin/Me...| 1053|
+|               White|  610|
+|               Black|  349|
+|               Other|  272|
+|             Unknown|   71|
+|         Other Asian|   46|
+|              Korean|    4|
+|             Chinese|    1|
+|American Indian/A...|    1|
++--------------------+-----+

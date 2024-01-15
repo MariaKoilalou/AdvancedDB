@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  13 JAN 2024 19:18
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  15 JAN 2024 19:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -589,7 +589,7 @@ LaTeX Font Warning: Font shape `TU/GFSDidot(0)/b/n' undefined
 File: lstlang1.sty 2019/09/10 1.8c listings language file
 ) [1
 
-]
+] [2] [3] [4] [5] [6] [7] [8] [9]
 The property list \polyglossia@langsetup contains the pairs (without outer
 braces):
 >  {latex/script}  =>  {latin}
@@ -640,18 +640,18 @@ braces):
 >  {english/babelname}  =>  {american}
 >  {english/localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {english/Localnumeral}  =>  {polyglossia@C@localnumeral}.
- [2] (./03119211.aux)
+ [10] (./03119211.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 11627 strings out of 481772
- 249806 string characters out of 5936450
- 919080 words of memory out of 5000000
- 28439 multiletter control sequences out of 15000+600000
- 536111 words of font info for 54 fonts, out of 8000000 for 9000
+ 11800 strings out of 481772
+ 252010 string characters out of 5936450
+ 1042080 words of memory out of 5000000
+ 28606 multiletter control sequences out of 15000+600000
+ 536119 words of font info for 55 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 65i,6n,100p,837b,1257s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 65i,6n,100p,837b,1656s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on 03119211.pdf (2 pages).
+Output written on 03119211.pdf (10 pages).

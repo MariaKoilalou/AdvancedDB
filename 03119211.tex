@@ -66,50 +66,350 @@
 
 \begin{lstlisting}[language = Python]
     schema1 = "`DR_NO` STRING, \
-    `Date Rptd` STRING, \
-    `DATE OCC` STRING, \
-    `TIME OCC` INTEGER, \
-    `AREA` INTEGER, \
-    `AREA NAME` STRING, \
-    `Rpt Dist No` INTEGER, \
-    `Part 1-2` INTEGER, \
-    `Crm Cd` INTEGER, \
-    `Crm Cd Desc` STRING, \
-    `Mocodes` STRING, \
-    `Vict Age` INTEGER, \
-    `Vict Sex` STRING, \
-    `Vict Descent` STRING, \
-    `Premis Cd` INTEGER, \
-    `Premis Desc` STRING, \
-    `Weapon Used Cd` INTEGER, \
-    `Weapon Desc` STRING, \
-    `Status` STRING, \
-    `Status Desc` STRING, \
-    `Crm Cd 1` INTEGER, \
-    `Crm Cd 2` INTEGER, \
-    `Crm Cd 3` INTEGER, \
-    `Crm Cd 4` INTEGER, \
-    `LOCATION` STRING, \
-    `Cross Street` STRING, \
-    `LAT` DOUBLE, \
-    `LON` DOUBLE"
+               `Date Rptd` STRING, \
+               `DATE OCC` STRING, \
+               `TIME OCC` INTEGER, \
+               `AREA` INTEGER, \
+               `AREA NAME` STRING, \
+               `Rpt Dist No` INTEGER, \
+               `Part 1-2` INTEGER, \
+               `Crm Cd` INTEGER, \
+               `Crm Cd Desc` STRING, \
+               `Mocodes` STRING, \
+               `Vict Age` INTEGER, \
+               `Vict Sex` STRING, \
+               `Vict Descent` STRING, \
+               `Premis Cd` INTEGER, \
+               `Premis Desc` STRING, \
+               `Weapon Used Cd` INTEGER, \
+               `Weapon Desc` STRING, \
+               `Status` STRING, \
+               `Status Desc` STRING, \
+               `Crm Cd 1` INTEGER, \
+               `Crm Cd 2` INTEGER, \
+               `Crm Cd 3` INTEGER, \
+               `Crm Cd 4` INTEGER, \
+               `LOCATION` STRING, \
+               `Cross Street` STRING, \
+               `LAT` DOUBLE, \
+               `LON` DOUBLE"
 
+    schema2 = "`Zip Code` INTEGER, \
+                `Community` STRING, \
+                `Estimated Median Income` STRING"
 
-data1 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2010.csv", header=True, schema=schema1)
-data2 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2020.csv", header=True, schema=schema1)
-df = data1.union(data2).distinct()
+    data1 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2010.csv", header=True, schema=schema1)
+    data2 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/crime_data_2020.csv", header=True, schema=schema1)
+    
+    df = data1.union(data2).distinct()
 
-df = df.withColumn("Date Rptd", to_date(col("Date Rptd"), "MM/dd/yyyy hh:mm:ss a")) \
- .withColumn("DATE OCC", to_date(col("DATE OCC"), "MM/dd/yyyy hh:mm:ss a"))
+    df = df.withColumn("Date Rptd", to_date(col("Date Rptd"), "MM/dd/yyyy hh:mm:ss a")) \
+    .withColumn("DATE OCC", to_date(col("DATE OCC"), "MM/dd/yyyy hh:mm:ss a"))
 
-df.count()
-print(f"Total number of rows: {df.count()}")
+    df.count()
+    print(f"Total number of rows: {df.count()}")
 
-df.printSchema()
+    df.printSchema()
 \end{lstlisting}
 
 \VerbatimInput[frame=single, fontsize=\small]{output/output1.csv}
 
+\section{Query 1}
+
+\subsection*{Dataframe API}
+
+\begin{lstlisting}[language = Python]
+    def query1_df(df):
+    crime_date = df.withColumn("Year", year("DATE OCC")).withColumn("Month", month("DATE OCC"))
+
+    count = crime_date.groupBy("Year", "Month").count()
+
+    window_spec = Window.partitionBy("Year").orderBy(desc("count"))
+    top_months = count.withColumn("rank", dense_rank().over(window_spec)).filter(col("rank") <= 3)
+
+    top_months = top_months.orderBy("Year", "rank")
+
+    return top_months
+\end{lstlisting}  
+\subsection*{SQL API}
+
+\begin{lstlisting}[language = Python]
+    def query1_sql(df):
+    crime_date = df.withColumn("Year", year("DATE OCC")).withColumn("Month", month("DATE OCC"))
+
+    # Δημιουργία προσωρινής προβολής
+    crime_date.createOrReplaceTempView("crimes")
+
+    # SQL ερώτημα για την εύρεση των τριών μηνών με τον υψηλότερο αριθμό εγκλημάτων ανά έτος
+    query1 = """
+    SELECT Year, Month, count, rank 
+    FROM (
+        SELECT Year, Month, count(*) AS count, 
+               DENSE_RANK() OVER (PARTITION BY Year ORDER BY count(*) DESC) AS rank
+        FROM crimes
+        GROUP BY Year, Month
+    ) 
+    WHERE rank <= 3
+    ORDER BY Year, rank
+    """
+
+    top_months = crime_date.sparkSession.sql(query1)
+
+    return top_months
+
+\end{lstlisting}  
+
+\VerbatimInput[frame=single, fontsize=\small]{output/output2.csv}
+
+\section*{Query 2}
+
+\subsection*{DataFrame\textbackslash SQL  API}
+
+\begin{lstlisting}[language = Python]
+
+    def query2_df(df):
+
+    def day_part(hour):
+        if 500 <= hour < 1200:
+            return "Πρωί"
+        elif 1200 <= hour < 1700:
+            return "Απόγευμα"
+        elif 1700 <= hour < 2100:
+            return "Βράδυ"
+        else:
+            return "Νύχτα"
+
+    day_part_udf = udf(day_part, StringType())
+
+    df_day_part = df.withColumn("DayPart", day_part_udf(col("TIME OCC")))
+
+    df_street_crimes = df_day_part.filter(col("Premis Desc") == "STREET").groupBy("DayPart").count().orderBy(col("count").desc())
+
+    return df_street_crimes
+\end{lstlisting}
+
+\subsection*{RDD API}
+
+\begin{lstlisting}[language = Python]
+    def query2_rdd(df):
+
+    def day_part(hour):
+        if 500 <= hour < 1200:
+            return "Πρωί"
+        elif 1200 <= hour < 1700:
+            return "Απόγευμα"
+        elif 1700 <= hour < 2100:
+            return "Βράδυ"
+        else:
+            return "Νύχτα"
+
+    rdd = df.rdd.filter(lambda row: row['Premis Desc'] == 'STREET')
+
+    def map_day_part(record):
+        hour = int(record["TIME OCC"])
+        part = day_part(hour)
+        return (part, 1)
+
+    rdd_mapped = rdd.map(map_day_part)
+    rdd_reduced = rdd_mapped.reduceByKey(lambda a, b: a + b)
+
+    rdd_street_crimes = rdd_reduced.sortBy(lambda x: x[1], ascending=False)
+
+    return rdd_street_crimes 
+\end{lstlisting}
+
+\VerbatimInput[frame=single, fontsize=\small]{output/output3.csv}
+
+\section*{Query 3}
+
+\begin{lstlisting}[language = Python]
+    data3 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/LA_income_2015.csv", header=True, schema=schema2)
+    data4 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/revgecoding.csv", header=True, schema=schema3)
+
+    schema3 = "`LAT` DOUBLE, \
+               `LON` DOUBLE, \
+               `ZIPcode` INTEGER"
+    
+    data3 = data3.withColumn("Estimated Median Income", regexp_replace(col("Estimated Median Income"), "\$", ""))
+    data3 = data3.withColumn("Estimated Median Income", regexp_replace(col("Estimated Median Income"), ",", "").cast("float"))
+     
+    crime_year = df.withColumn("Year", year("DATE OCC"))
+
+    crime_2015 = crime_year.filter(
+       (col("Year") == 2015) & 
+       (col("Vict Descent").isNotNull()))
+
+    def map_descent(code):
+        return descent_mapping.get(code, "Unknown")  # Default to "Unknown" if code not found
+
+    map_descent_udf = udf(map_descent, StringType())
+
+    crime_2015 = crime_2015.withColumn("Vict Descent", map_descent_udf(crime_2015["Vict Descent"]))
+
+    revgecoding = data4.dropDuplicates(['LAT', 'LON'])
+\end{lstlisting}
+
+\begin{lstlisting}
+    def query3 (crime_2015, data3, revgecoding):
+
+    crime_zip = crime_2015.join(revgecoding, ["LAT", "LON"], "left")
+
+    best3_zip = data3.orderBy("Estimated Median Income", ascending=False).limit(3)
+    worst3_zip = data3.orderBy("Estimated Median Income", ascending=True).limit(3)
+    
+    best3_zip_list = [row['Zip Code'] for row in best3_zip.collect()] 
+    worst3_zip_list = [row['Zip Code'] for row in worst3_zip.collect()]
+
+    crimes = crime_zip.filter(
+        (col("ZIPcode").isin(best3_zip_list)) | 
+        (col("ZIPcode").isin(worst3_zip_list))
+    )
+    
+    vict_descent_count = crimes.groupBy("Vict Descent").count().orderBy("count", ascending=False)
 
 
+    return vict_descent_count
+\end{lstlisting}
+
+\subsection*{2 Executors}
+\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_2.csv}
+\subsection*{3 Executors}
+\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_3.csv}
+
+\subsection*{4 Executors}
+\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_3.csv}
+
+\section*{Query 4}
+
+\begin{lstlisting}[language = Python]
+    data5 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/LAPD_Police_Stations.csv", header=True, schema=schema4)
+
+\end{lstlisting}
+    
+
+
+\begin{lstlisting}{language = Python}
+    def query4(df, data5):
+
+    def haversine(lat1, lon1, lat2, lon2):
+        # Radius of the Earth in kilometers
+        R = 6371.0
+
+        lat1_rad = math.radians(lat1)
+        lon1_rad = math.radians(lon1)
+        lat2_rad = math.radians(lat2)
+        lon2_rad = math.radians(lon2)
+
+        dlat = lat2_rad - lat1_rad
+        dlon = lon2_rad - lon1_rad
+
+        a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon / 2)**2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+        distance = R * c
+        return distance
+
+    def get_distance(lat1, long1, lat2, long2):
+
+        def is_valid_coordinate(lat, lon):
+            return -90 <= lat <= 90 and -180 <= lon <= 180
+
+
+        if not is_valid_coordinate(lat1, long1) or not is_valid_coordinate(lat2, long2):
+            # Print the invalid rows
+            print(f"Invalid row: lat1={lat1}, long1={long1}, lat2={lat2}, long2={long2}")
+            return -1
+
+        try:
+            return haversine(lat1, long1, lat2, long2)
+        except ValueError:
+            return -1
+
+    df_4a = df.filter(
+        (df["AREA NAME"] != "Null Island") &
+        (df["Weapon Used Cd"].substr(1, 1) == "1")
+    )
+
+    df_4b = df.filter(
+        (df["AREA NAME"] != "Null Island") &
+        (df["Weapon Used Cd"].isNotNull())
+    )
+
+    joined_df_4a = df_4a.join(data5, df_4a["AREA"] == data5["PREC"])
+    joined_df_4b = df_4b.join(data5, df_4b["AREA"] == data5["PREC"])
+
+    distance_udf = udf(get_distance)
+
+    distance_df_4a = joined_df_4a.withColumn(
+        "DISTANCE",
+        distance_udf(
+            F.col("LAT"), F.col("LON"),
+            F.col("Y"), F.col("X")
+        ).cast("double")
+    )
+
+    distance_df_4b = joined_df_4b.withColumn(
+        "DISTANCE",
+        distance_udf(
+            F.col("LAT"), F.col("LON"),
+            F.col("Y"), F.col("X")
+        ).cast("double")
+    )
+
+    query_4_1a = distance_df_4a.groupBy("Year").agg(
+        F.count("*").alias("num_crimes"),
+        F.avg("DISTANCE").alias("average_distance")
+    ).orderBy("Year")
+
+    query_4_1b = distance_df_4b.groupBy("DIVISION").agg(
+        F.count("*").alias("num_crimes"),
+        F.avg("DISTANCE").alias("average_distance")
+    ).orderBy(F.desc("num_crimes"))
+
+    print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
+    print("(a)")
+    query_4_1a.show() 
+    print("(b)")
+    query_4_1b.show() 
+
+    cross_joined_df = df.crossJoin(data5.withColumnRenamed("LAT", "Y").withColumnRenamed("LON", "X"))
+
+    cross_joined_df = cross_joined_df.withColumn(
+        "DISTANCE",
+        distance_udf(col("LAT"), col("LON"), col("Y"), col("X")).cast("double")
+    )
+
+    windowSpec = Window.partitionBy("DR_NO").orderBy("DISTANCE")
+
+    nearest_station_df = cross_joined_df.withColumn(
+        "row_num",
+        F.row_number().over(windowSpec)
+    ).filter(col("row_num") == 1).drop("row_num")
+
+    cross_df_4a = df_4a.join(nearest_station_df.drop("Year"), "DR_NO")
+    cross_df_4b = df_4b.join(nearest_station_df.drop("Year"), "DR_NO")
+
+    query_4_2a = cross_df_4a.groupBy("Year").agg(
+        F.count("*").alias("num_crimes"),
+        F.avg("DISTANCE").alias("average_distance")
+    ).orderBy("Year")
+
+    query_4_2b = cross_df_4b.groupBy("DIVISION").agg(
+        F.count("*").alias("num_crimes"),
+        F.avg("DISTANCE").alias("average_distance")
+    ).orderBy(F.desc("num_crimes"))
+
+
+    print("Απόσταση από το πλησιέστερο αστυνομικό τμήμα:")
+    print("(a)")
+    query_4_2a.show()
+    print("(b)")
+    query_4_2b.show()
+\end{lstlisting}
+
+\VerbatimInput[frame=single, fontsize=\small]{output/output5.csv}
+
+\section{hint \& explain}
+
+\
 \end{document}

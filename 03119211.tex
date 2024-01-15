@@ -9,6 +9,7 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 \usepackage{float}
 \usepackage{caption}
 \usepackage{verbatim}
@@ -20,18 +21,6 @@
 
 \DeclareCaptionLabelFormat{blank}{}
 \captionsetup[lstlisting]{labelformat=blank}
-
-\lstset{
-    basicstyle=\ttfamily\small, % Set the basic style of the listing
-    breaklines=true, % Enable line breaking
-    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}, % Indicator for line break
-    frame=single, % Frame around the code
-    caption={Your File Caption}, % Caption for the listing
-    captionpos=b, % Position of the caption (t for top, b for bottom)
-    numbers=left, % Line numbers on left
-    numberstyle=\tiny\color{gray}, % Style of line numbers
-    numbersep=5pt, % How far the line-numbers are from the code
-}
 
 % Define the mystyle for code listings
 \lstdefinestyle{mystyle}{
@@ -66,7 +55,7 @@
 
 \title{Προχωρημένα Θέματα Βάσεων Δεδομένων}
 \author{Μαρία Κοιλαλού | Μυρτώ Ορφανάκου\\
-\textit{AM:03119211 | ΑM:}} 
+\textit{AM:03119211 | ΑM:03119173}} 
 
 \begin{document}
 
@@ -74,7 +63,21 @@
 
 \vspace{3\baselineskip}
 
+\section{}
+Για την εγκατάσταση του Apache Spark ώστε να εκτελείται πάνω από το διαχειριστή πόρων του Apache Hadoop και YARN,
+δημιουργήσαμε δύο Virtual Machines στην πλατφόρμα okeanos-knossos ακολουθώντας τις οδηγίες που μας δόθηκαν.
+Οι web εφαρμογές είναι προσβάσιμες και διαμορφωμένες σύμφωνα με τις οδηγίες στα παρακάτων links: 
+
+\begin{center}
+\href{http://83.212.81.191:8088}{YARN} \\
+\href{http://83.212.81.191:9870}{HDFS} \\
+\href{http://83.212.81.191:18080}{Spark History} \\
+\end{center}
+
+
 \section*{Spark Session}
+
+Αρχικά, υλοποιήθηκε μια συνάρτηση που δημιουργεί ένα Spark Session και δέχεται ως όρισμα τον αριθμό των executors.
 
 \begin{lstlisting}[language = Python]
     from pyspark.sql import SparkSession
@@ -100,11 +103,18 @@
        return spark
 \end{lstlisting}
 
+Κάθε φορά που θέλουμε να ξεκινήσουμε νέο session καλούμε την συνάρτηση 
+\textcolor{blue}{create\_spark\_session()} με τον αντίστοιχο αριθμό executors που θέλουμε.
+
 \begin{lstlisting}[language = Python]
     spark = create_spark_session(4)
     print("spark session created")  
 \end{lstlisting}
-\section*{Create DataFrame}
+
+\section{Create DataFrame}
+
+Δημιουργήσαμε ένα schema για το DataFrame του βασικού συνόλου δεδομένων. Τα αρχικά ονόματα των στηλών διατηρήθηκαν, ενώ οι τύποι δεδομένων προσαρμόστηκαν με βάση τα ζητούμενα. \\
+Στη συνέχεια δημιουργήθηκε ένα ενιαίο DataFrame για όλα τα δεδομένα, όπως φαίνεται στον παρακάτω κώδικα: 
 
 \begin{lstlisting}[language = Python]
     schema1 = "`DR_NO` STRING, \
@@ -151,10 +161,13 @@
     df.printSchema()
 \end{lstlisting}
 
+Ο συνολικός αριθμός γραμμών του συνόλου δεδομένων, καθώς και ο τύπος κάθε στήλης είναι τα εξής:
 \VerbatimInput[frame=single, fontsize=\small]{output/output1.csv}
 
-\section*{Query 1}
 
+\section{Query 1}
+
+Υλοποιήθηκε μία συνάρτηση για το Query 1 χρησιμοποιώντας DataFrame API: 
 \subsection*{Dataframe API}
 
 \begin{lstlisting}[language = Python]
@@ -170,6 +183,8 @@
 
     return top_months
 \end{lstlisting}  
+
+Στη συνέχεια το Query 1 υλοποιήθηκε με SQL API:
 \subsection*{SQL API}
 
 \begin{lstlisting}[language = Python]
@@ -198,11 +213,14 @@
 
 \end{lstlisting}  
 
+Παρακάτω φαίνονται τα αποτελέσματα του Query 1 για τις δύο διαφορετικές υλοποιήσεις, καθώς και οι αντίστοιχοι χρόνοι εκτέλεσης. Παρατηρούμε ότι υπάρχει διαφορά στην επίδοση των δύο APIs. Συγκεκριμένα, το DataFrame API πραγματοποιήθηκε σε πολύ λιγότερο χρόνο σε σχέση με το SQL API.
 \VerbatimInput[frame=single, fontsize=\small]{output/output2.csv}
 
-\section*{Query 2}
+\section{Query 2}
 
 \subsection*{DataFrame\textbackslash SQL  API}
+
+Υλοποιήθηκε μία συνάρτηση για το Query 2 χρησιμοποιώντας DataFrame/ SQL API:
 
 \begin{lstlisting}[language = Python]
 
@@ -229,6 +247,7 @@
 
 \subsection*{RDD API}
 
+Στη συνέχεια το Query 2 υλοποιήθηκε με RDD API:
 \begin{lstlisting}[language = Python]
     def query2_rdd(df):
 
@@ -257,9 +276,14 @@
     return rdd_street_crimes 
 \end{lstlisting}
 
+Ακολουθούν τα αποτελέσματα του Query 2 για τις δύο διαφορετικές υλοποιήσεις, καθώς και οι αντίστοιχοι χρόνοι εκτέλεσης. Παρατηρούμε ότι υπάρχει διαφορά στην επίδοση των δύο APIs. Συγκεκριμένα, το DataFrame/ SQL API πραγματοποιήθηκε σε πολύ λιγότερο χρόνο σε σχέση με το RDD API. 
 \VerbatimInput[frame=single, fontsize=\small]{output/output3.csv}
 
-\section*{Query 3}
+\section{Query 3}
+
+Στο συγκεκριμένο ερώτημα χρησιμοποιήθηκαν τα δευτερεύοντα σύνολα δεδομένων 
+\textcolor{blue}{revgecoding} και \textcolor{blue}{LA\_income\_2015}. \\
+Επιπλέον, πραγματοποιήθηκε map για τα Vict  Descent. \\
 
 \begin{lstlisting}[language = Python]
     data3 = spark.read.csv("/user/ubuntu/ta/advanced-db/data/LA_income_2015.csv", header=True, schema=schema2)
@@ -314,6 +338,8 @@
     revgecoding = data4.dropDuplicates(['LAT', 'LON'])
 \end{lstlisting}
 
+Έπειτα υλοποιήθηκε το Query 3 χρησιμοποιώντας DataFrame/ SQL API. 
+
 \begin{lstlisting}
     def query3 (crime_2015, data3, revgecoding):
 
@@ -336,18 +362,27 @@
     return vict_descent_count
 \end{lstlisting}
 
+Το Query 3 εκτελέστηκε σε ένα for loop, δημιουργώντας διαδοχικά τρία Spark Sessions για 2, 3 και 4 executors. Παρακάτω φαίνονται τα αποτελέσματα και η διάρκεια της κάθε εκτέλεσης αντίστοιχα. 
+Παρατηρούμε ότι ταχύτερα εκτελέστηκε το Query με 3 executors, έπειτα με 2 και τέλος με 4. 
 \subsection*{2 Executors}
 \VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_2.csv}
 \subsection*{3 Executors}
 \VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_3.csv}
 
 \subsection*{4 Executors}
-\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_3.csv}
+\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_4.csv}
 
-\section*{Query 4}
+\section{Query 4}
+
+Για το ζητούμενο 6 χρησιμοποιήθηκαν επιπλέον τα δεδομένα \textcolor{blue}{LAPD\_Police\_Stations}. 
+Το Query 4 υλοποιήθηκε με DataFrame/SQL API και εκτελέστηκε με 4 executors.  \\
+Αρχικά δημιουργήθηκε μια συνάρτηση για τον υπολογισμό της απόστασης μεταξύ 2 σημείων με 
+συγκεκριμένες συντεταγμένες. \\
+Στη συνέχεια πραγματοποιήθηκαν δύο join, ένα για κάθε ερώτημα \\
+Έπειτα, γία την περίπτωση του κοντινότερου station, πραγματοποιήθηκε ένα cross join μεταξύ των DataFrame των εγκλημάτων και 
+του \textcolor{blue}{LAPD\_Police\_Stations} για τον εντοπισμό του κοντινότερου τμήματος σε κάθε έγκλημα. 
 
 \begin{lstlisting}[language = Python]
-
     schema4 = "`X` DOUBLE, \
                `Y` DOUBLE, \
                `FID` INTEGER, \
@@ -399,22 +434,16 @@
             except ValueError:
                 return -1
 
-        df_4a = df.filter(
+        df = df.filter(
             (df["AREA NAME"] != "Null Island") &
             (df["Weapon Used Cd"].substr(1, 1) == "1")
         )
 
-        df_4b = df.filter(
-            (df["AREA NAME"] != "Null Island") &
-            (df["Weapon Used Cd"].isNotNull())
-        )
-
-        joined_df_4a = df_4a.join(data5, df_4a["AREA"] == data5["PREC"])
-        joined_df_4b = df_4b.join(data5, df_4b["AREA"] == data5["PREC"])
+        joined_df = df.join(data5, df["AREA"] == data5["PREC"])
 
         distance_udf = udf(get_distance)
 
-        distance_df_4a = joined_df_4a.withColumn(
+        distance_df = joined_df.withColumn(
             "DISTANCE",
             distance_udf(
                 F.col("LAT"), F.col("LON"),
@@ -422,23 +451,15 @@
             ).cast("double")
         )
 
-        distance_df_4b = joined_df_4b.withColumn(
-            "DISTANCE",
-            distance_udf(
-                F.col("LAT"), F.col("LON"),
-                F.col("Y"), F.col("X")
-            ).cast("double")
-        )
+        query_4_1a = distance_df.groupBy("Year").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy("Year").withColumnRenamed("Year", "year")
 
-        query_4_1a = distance_df_4a.groupBy("Year").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy("Year")
-
-        query_4_1b = distance_df_4b.groupBy("DIVISION").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy(F.desc("num_crimes"))
+        query_4_1b = distance_df.groupBy("DIVISION").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy(F.desc("#")).withColumnRenamed("DIVISION", "division")
 
         print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
         print("(a)")
@@ -460,18 +481,15 @@
             F.row_number().over(windowSpec)
         ).filter(col("row_num") == 1).drop("row_num")
 
-        cross_df_4a = df_4a.join(nearest_station_df.drop("Year"), "DR_NO")
-        cross_df_4b = df_4b.join(nearest_station_df.drop("Year"), "DR_NO")
+        query_4_2a = nearest_station_df.groupBy("Year").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy("Year").withColumnRenamed("Year", "year")
 
-        query_4_2a = cross_df_4a.groupBy("Year").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy("Year")
-
-        query_4_2b = cross_df_4b.groupBy("DIVISION").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy(F.desc("num_crimes"))
+        query_4_2b = nearest_station_df.groupBy("DIVISION").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy(F.desc("#")).withColumnRenamed("DIVISION", "division")
 
 
         print("Απόσταση από το πλησιέστερο αστυνομικό τμήμα:")
@@ -560,25 +578,18 @@
             except ValueError:
                 return -1
 
-        df_4a = df.filter(
+        df = df.filter(
             (df["AREA NAME"] != "Null Island") &
             (df["Weapon Used Cd"].substr(1, 1) == "1")
         )
 
-        df_4b = df.filter(
-            (df["AREA NAME"] != "Null Island") &
-            (df["Weapon Used Cd"].isNotNull())
-        )
+        joined_df = df.join(data5.hint(join_strategy), df["AREA"] == data5["PREC"])
 
-        joined_df_4a = df_4a.join(data5.hint(join_strategy), df_4a["AREA"] == data5["PREC"])
-        joined_df_4b = df_4b.join(data5.hint(join_strategy), df_4b["AREA"] == data5["PREC"])
-
-        joined_df_4a.explain()
-        joined_df_4b.explain()
+        joined_df.explain()
 
         distance_udf = udf(get_distance)
 
-        distance_df_4a = joined_df_4a.withColumn(
+        distance_df = joined_df.withColumn(
             "DISTANCE",
             distance_udf(
                 F.col("LAT"), F.col("LON"),
@@ -586,35 +597,23 @@
             ).cast("double")
         )
 
-        distance_df_4b = joined_df_4b.withColumn(
-            "DISTANCE",
-            distance_udf(
-                F.col("LAT"), F.col("LON"),
-                F.col("Y"), F.col("X")
-            ).cast("double")
-        )
+        query_4_1a = distance_df.groupBy("Year").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy("Year").withColumnRenamed("Year", "year")
 
-        query_4_1a = distance_df_4a.groupBy("Year").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy("Year")
-
-        query_4_1b = distance_df_4b.groupBy("DIVISION").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy(F.desc("num_crimes"))
-
-        query_4_1a.explain()
-        query_4_1b.explain()
+        query_4_1b = distance_df.groupBy("DIVISION").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy(F.desc("#")).withColumnRenamed("DIVISION", "division")
 
         print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
         print("(a)")
-        query_4_1a.show()
+        query_4_1a.show() 
         print("(b)")
-        query_4_1b.show()
+        query_4_1b.show() 
 
         cross_joined_df = df.crossJoin(data5.withColumnRenamed("LAT", "Y").withColumnRenamed("LON", "X"))
-
 
         cross_joined_df = cross_joined_df.withColumn(
             "DISTANCE",
@@ -628,18 +627,16 @@
             F.row_number().over(windowSpec)
         ).filter(col("row_num") == 1).drop("row_num")
 
-        cross_df_4a = df_4a.join(nearest_station_df.drop("Year"), "DR_NO")
-        cross_df_4b = df_4b.join(nearest_station_df.drop("Year"), "DR_NO")
-        
-        query_4_2a = cross_df_4a.groupBy("Year").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy("Year")
+        query_4_2a = nearest_station_df.groupBy("Year").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy("Year").withColumnRenamed("Year", "year")
 
-        query_4_2b = cross_df_4b.groupBy("DIVISION").agg(
-            F.count("*").alias("num_crimes"),
-            F.avg("DISTANCE").alias("average_distance")
-        ).orderBy(F.desc("num_crimes"))
+        query_4_2b = nearest_station_df.groupBy("DIVISION").agg(
+            F.avg("DISTANCE").alias("average_distance"),
+            F.count("*").alias("#")
+        ).orderBy(F.desc("#")).withColumnRenamed("DIVISION", "division")
+
 
         print("Απόσταση από το πλησιέστερο αστυνομικό τμήμα:")
         print("(a)")

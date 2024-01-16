@@ -167,6 +167,9 @@
 
 \section{Query 1}
 
+Link για το Spark UI:
+\href{http://83.212.81.191:18080/history/application_1705357398960_0013/jobs/}{Query1 \& Query2} \\
+
 Υλοποιήθηκε μία συνάρτηση για το Query 1 χρησιμοποιώντας DataFrame API: 
 \subsection*{Dataframe API}
 
@@ -281,6 +284,10 @@
 
 \section{Query 3}
 
+Link για το Spark UI: 
+\href{http://83.212.81.191:18080/history/application_1705357398960_0014/jobs/} {Query3: Exec 2} 
+\href{http://83.212.81.191:18080/history/application_1705357398960_0015/jobs/} {Query3: Exec 3} 
+\href{http://83.212.81.191:18080/history/application_1705357398960_0016/jobs/} {Query4: Exec 4} \\
 Στο συγκεκριμένο ερώτημα χρησιμοποιήθηκαν τα δευτερεύοντα σύνολα δεδομένων 
 \textcolor{blue}{revgecoding} και \textcolor{blue}{LA\_income\_2015}. \\
 Επιπλέον, πραγματοποιήθηκε map για τα Vict  Descent. \\
@@ -374,13 +381,16 @@
 
 \section{Query 4}
 
+Link για το Spark UI: 
+\href{http://83.212.81.191:18080/history/application_1705357398960_0017/jobs/} {Query 4} \\
+
 Για το ζητούμενο 6 χρησιμοποιήθηκαν επιπλέον τα δεδομένα \textcolor{blue}{LAPD\_Police\_Stations}. 
 Το Query 4 υλοποιήθηκε με DataFrame/SQL API και εκτελέστηκε με 4 executors.  \\
 Αρχικά δημιουργήθηκε μια συνάρτηση για τον υπολογισμό της απόστασης μεταξύ 2 σημείων με 
 συγκεκριμένες συντεταγμένες. \\
-Στη συνέχεια πραγματοποιήθηκαν δύο join, ένα για κάθε ερώτημα \\
-Έπειτα, γία την περίπτωση του κοντινότερου station, πραγματοποιήθηκε ένα cross join μεταξύ των DataFrame των εγκλημάτων και 
-του \textcolor{blue}{LAPD\_Police\_Stations} για τον εντοπισμό του κοντινότερου τμήματος σε κάθε έγκλημα. 
+Στη συνέχεια πραγματοποιήθηκε join μεταξύ του αρχικού Dataframe και του \textcolor{blue}{LAPD\_Police\_Stations}\\
+Έπειτα, γία την περίπτωση του κοντινότερου station, πραγματοποιήθηκε ένα cross join μεταξύ των δύο dataframe
+για τον εντοπισμό του κοντινότερου τμήματος σε κάθε έγκλημα. 
 
 \begin{lstlisting}[language = Python]
     schema4 = "`X` DOUBLE, \
@@ -499,12 +509,15 @@
         query_4_2b.show()
 \end{lstlisting}
 
+Τα αποτελέσματα της εκτέλεσης για τα 4 ερωτήματα είναι τα εξής: 
+
 \VerbatimInput[frame=single, fontsize=\small]{output/output5.csv}
 
 \section*{hint \& explain}
 
 \subsection*{Query 3}
-
+Link για το Spark UI:
+\href{http://83.212.81.191:18080/history/application_1705357398960_0018/jobs/} {Query3 Hint \& Explain}
 \begin{lstlisting}
     join_strategies = ["broadcast", "merge", "shuffle_hash", "shuffle_replicate_nl"]
 
@@ -539,6 +552,11 @@
 
 
 \subsection*{Query 4}
+
+\href{http://83.212.81.191:18080/history/application_1705357398960_0019/jobs/} {Query 4 Broadcast}
+\href{http://83.212.81.191:18080/history/application_1705357398960_0020/jobs/} {Query 4 Merge}
+\href{http://83.212.81.191:18080/history/application_1705357398960_0021/jobs/} {Query 4 Shuffle Hush}
+\href{http://83.212.81.191:18080/history/application_1705357398960_0023/jobs/} {Query 4 Shuffle Replicate} \\
 
 \begin{lstlisting}[language = Python]
     def query4(df, data5, join_strategy):
@@ -644,7 +662,6 @@
         query_4_2b.show()
 
 \end{lstlisting}
-
 
 
 

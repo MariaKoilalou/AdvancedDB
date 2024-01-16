@@ -17,6 +17,7 @@
 \usepackage{fancyvrb}
 \usepackage{enumitem}
 \usepackage{longtable} 
+\usepackage{booktabs}
 \usepackage[left=0.5cm, right=0.5cm, top=2cm, bottom=2cm]{geometry}
 
 \DeclareCaptionLabelFormat{blank}{}
@@ -103,6 +104,9 @@
        return spark
 \end{lstlisting}
 
+
+\vspace{1\baselineskip}
+
 Κάθε φορά που θέλουμε να ξεκινήσουμε νέο session καλούμε την συνάρτηση 
 \textcolor{blue}{create\_spark\_session()} με τον αντίστοιχο αριθμό executors που θέλουμε.
 
@@ -161,6 +165,9 @@
     df.printSchema()
 \end{lstlisting}
 
+
+\vspace{1\baselineskip}
+
 Ο συνολικός αριθμός γραμμών του συνόλου δεδομένων, καθώς και ο τύπος κάθε στήλης είναι τα εξής:
 \VerbatimInput[frame=single, fontsize=\small]{output/output1.csv}
 
@@ -217,9 +224,79 @@ Link για το Spark UI:
 \end{lstlisting}  
 
 Παρακάτω φαίνονται τα αποτελέσματα του Query 1 για τις δύο διαφορετικές υλοποιήσεις, καθώς και οι αντίστοιχοι χρόνοι εκτέλεσης. Παρατηρούμε ότι υπάρχει διαφορά στην επίδοση των δύο APIs. Συγκεκριμένα, το DataFrame API πραγματοποιήθηκε σε πολύ λιγότερο χρόνο σε σχέση με το SQL API.
-\VerbatimInput[frame=single, fontsize=\small]{output/output2.csv}
+
+\begin{center} 
+\noindent % To align the tables side by side
+\begin{tabular}[t]{|c|c|c|c|}
+\hline
+\textbf{year} & \textbf{month} & \textbf{crime\_total} & \textbf{\#} \\
+\hline
+2010 & 1 & 19515 & 1 \\
+2010 & 3 & 18131 & 2 \\
+2010 & 7 & 17856 & 3 \\
+2011 & 1 & 18134 & 1 \\
+2011 & 7 & 17283 & 2 \\
+2011 & 10 & 17034 & 3 \\
+2012 & 1 & 17943 & 1 \\
+2012 & 8 & 17661 & 2 \\
+2012 & 5 & 17502 & 3 \\
+2013 & 8 & 17440 & 1 \\
+2013 & 1 & 16820 & 2 \\
+2013 & 7 & 16644 & 3 \\
+2014 & 7 & 12196 & 1 \\
+2014 & 10 & 12133 & 2 \\
+2014 & 8 & 12028 & 3 \\
+2015 & 10 & 19219 & 1 \\
+2015 & 8 & 19011 & 2 \\
+2015 & 7 & 18709 & 3 \\
+2016 & 10 & 19659 & 1 \\
+2016 & 8 & 19490 & 2 \\
+\hline
+\multicolumn{4}{|c|}{only showing top 20 rows} \\
+\hline
+\multicolumn{4}{|c|}{Q1 Dataframe time: 0.537975549697876 seconds} \\
+\hline
+\end{tabular}
+\hspace{10mm} % Space between tables
+\begin{tabular}[t]{|c|c|c|c|}
+\hline
+\textbf{year} & \textbf{month} & \textbf{crime\_total} & \textbf{\#} \\
+\hline
+2010 & 1 & 19515 & 1 \\
+2010 & 3 & 18131 & 2 \\
+2010 & 7 & 17856 & 3 \\
+2011 & 1 & 18134 & 1 \\
+2011 & 7 & 17283 & 2 \\
+2011 & 10 & 17034 & 3 \\
+2012 & 1 & 17943 & 1 \\
+2012 & 8 & 17661 & 2 \\
+2012 & 5 & 17502 & 3 \\
+2013 & 8 & 17440 & 1 \\
+2013 & 1 & 16820 & 2 \\
+2013 & 7 & 16644 & 3 \\
+2014 & 7 & 12196 & 1 \\
+2014 & 10 & 12133 & 2 \\
+2014 & 8 & 12028 & 3 \\
+2015 & 10 & 19219 & 1 \\
+2015 & 8 & 19011 & 2 \\
+2015 & 7 & 18709 & 3 \\
+2016 & 10 & 19659 & 1 \\
+2016 & 8 & 19490 & 2 \\
+\hline
+\multicolumn{4}{|c|}{only showing top 20 rows} \\
+\hline
+\multicolumn{4}{|c|}{Q1 SQL time: 0.861966609954834 seconds} \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{4\baselineskip}
+
 
 \section{Query 2}
+
+
+\vspace{1\baselineskip}
 
 \subsection*{DataFrame\textbackslash SQL  API}
 
@@ -248,6 +325,7 @@ Link για το Spark UI:
     return df_street_crimes
 \end{lstlisting}
 
+\vspace{1\baselineskip}
 \subsection*{RDD API}
 
 Στη συνέχεια το Query 2 υλοποιήθηκε με RDD API:
@@ -277,11 +355,39 @@ Link για το Spark UI:
     rdd_street_crimes = rdd_reduced.sortBy(lambda x: x[1], ascending=False)
 
     return rdd_street_crimes 
-\end{lstlisting}
+\end{lstlisting} 
+
+
+\vspace{1\baselineskip}
 
 Ακολουθούν τα αποτελέσματα του Query 2 για τις δύο διαφορετικές υλοποιήσεις, καθώς και οι αντίστοιχοι χρόνοι εκτέλεσης. Παρατηρούμε ότι υπάρχει διαφορά στην επίδοση των δύο APIs. Συγκεκριμένα, το DataFrame/ SQL API πραγματοποιήθηκε σε πολύ λιγότερο χρόνο σε σχέση με το RDD API. 
     
-\VerbatimInput[frame=single, fontsize=\small]{output/output3.csv}
+
+\begin{center} % Centering the table
+\begin{tabular}{|c|c|}
+\hline
+\textbf{DayPart} & \textbf{count} \\
+\hline
+Νύχτα & 231546 \\
+Βράδυ & 182141 \\
+Απόγευμα & 143974 \\
+Πρωί & 120358 \\
+\hline
+\multicolumn{2}{|c|}{only showing top 4 rows} \\
+\hline
+\multicolumn{2}{|c|}{Q2 Dataframe time: 0.2953650951385498 seconds} \\
+\hline
+\end{tabular}
+
+\vspace{2\baselineskip}
+
+\noindent \textbf{RDD:} [('Νύχτα', 231546), ('Βράδυ', 182141), ('Απόγευμα', 143974), ('Πρωί', 120358)]
+
+\noindent \textbf{Q2 RDD time:} 61.14855885505676 seconds.
+
+\end{center}
+
+\vspace{1\baselineskip}
 
 \section{Query 3}
 
@@ -346,6 +452,8 @@ Link για το Spark UI:
     revgecoding = data4.dropDuplicates(['LAT', 'LON'])
 \end{lstlisting}
 
+\vspace{2\baselineskip}
+
 Έπειτα υλοποιήθηκε το Query 3 χρησιμοποιώντας DataFrame/ SQL API. 
 
 \begin{lstlisting}
@@ -370,28 +478,91 @@ Link για το Spark UI:
     return vict_descent_count
 \end{lstlisting}
 
-Το Query 3 εκτελέστηκε σε ένα for loop, δημιουργώντας διαδοχικά τρία Spark Sessions για 2, 3 και 4 executors. Παρακάτω φαίνονται τα αποτελέσματα και η διάρκεια της κάθε εκτέλεσης αντίστοιχα. 
-Παρατηρούμε ότι ταχύτερα εκτελέστηκε το Query με 3 executors, έπειτα με 2 και τέλος με 4. 
-\subsection*{2 Executors}
-\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_2.csv}
-\subsection*{3 Executors}
-\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_3.csv}
+\vspace{3\baselineskip}
 
-\subsection*{4 Executors}
-\VerbatimInput[frame=single, fontsize=\small]{output/output4_executors_4.csv}
+Το Query 3 εκτελέστηκε σε ένα for loop, δημιουργώντας διαδοχικά τρία Spark Sessions για 2, 3 και 4 executors. Παρακάτω φαίνονται τα αποτελέσματα και η διάρκεια της κάθε εκτέλεσης αντίστοιχα. 
+Παρατηρούμε ότι ταχύτερα εκτελέστηκε το Query με 3 executors, έπειτα με 2 και τέλος με 4. \\
+
+\begin{center}
+\noindent % Aligning the tables side by side
+\begin{tabular}[t]{|c|c|}
+\hline
+\textbf{Vict Descent} & \textbf{count} \\
+\hline
+Hispanic/Latin/Mexican & 1053 \\
+White & 610 \\
+Black & 349 \\
+Other & 272 \\
+Unknown & 71 \\
+Other Asian & 46 \\
+Korean & 4 \\
+Chinese & 1 \\
+American Indian/Alaskan Native & 1 \\
+\hline
+\multicolumn{2}{|c|}{Number of Executors: 2} \\
+\multicolumn{2}{|c|}{Q3 time: 12.225924015045166 seconds} \\
+\hline
+\end{tabular}
+\hspace{5mm} % Space between tables
+\begin{tabular}[t]{|c|c|}
+\hline
+\textbf{Vict Descent} & \textbf{count} \\
+\hline
+Hispanic/Latin/Mexican & 1053 \\
+White & 610 \\
+Black & 349 \\
+Other & 272 \\
+Unknown & 71 \\
+Other Asian & 46 \\
+Korean & 4 \\
+Chinese & 1 \\
+American Indian/Alaskan Native & 1 \\
+\hline
+\multicolumn{2}{|c|}{Number of Executors: 3} \\
+\multicolumn{2}{|c|}{Q3 time: 11.629308462142944 seconds} \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{3mm} % Vertical space before the third table
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Vict Descent} & \textbf{count} \\
+\hline
+Hispanic/Latin/Mexican & 1053 \\
+White & 610 \\
+Black & 349 \\
+Other & 272 \\
+Unknown & 71 \\
+Other Asian & 46 \\
+Korean & 4 \\
+Chinese & 1 \\
+American Indian/Alaskan Native & 1 \\
+\hline
+\multicolumn{2}{|c|}{Number of Executors: 4} \\
+\multicolumn{2}{|c|}{Q3 time: 18.245003938674927 seconds} \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{3mm}
 
 \section{Query 4}
 
 Link για το Spark UI: 
 \href{http://83.212.81.191:18080/history/application_1705357398960_0017/jobs/} {Query 4} \\
 
-Για το ζητούμενο 6 χρησιμοποιήθηκαν επιπλέον τα δεδομένα \textcolor{blue}{LAPD\_Police\_Stations}. 
+Για το ζητούμενο 6 χρησιμοποιήθηκαν επιπλέον τα δεδομένα \textcolor{blue}{LAPD\_Police\_Stations}. \\
 Το Query 4 υλοποιήθηκε με DataFrame/SQL API και εκτελέστηκε με 4 executors.  \\
 Αρχικά δημιουργήθηκε μια συνάρτηση για τον υπολογισμό της απόστασης μεταξύ 2 σημείων με 
 συγκεκριμένες συντεταγμένες. \\
 Στη συνέχεια πραγματοποιήθηκε join μεταξύ του αρχικού Dataframe και του \textcolor{blue}{LAPD\_Police\_Stations}\\
 Έπειτα, γία την περίπτωση του κοντινότερου station, πραγματοποιήθηκε ένα cross join μεταξύ των δύο dataframe
 για τον εντοπισμό του κοντινότερου τμήματος σε κάθε έγκλημα. 
+
+\vspace{3mm}
 
 \begin{lstlisting}[language = Python]
     schema4 = "`X` DOUBLE, \
@@ -406,7 +577,7 @@ Link για το Spark UI:
 
 \end{lstlisting}
     
-
+\vspace{5mm}
 
 \begin{lstlisting}{language = Python}
     def query4(df, data5):
@@ -510,21 +681,150 @@ Link για το Spark UI:
         query_4_2b.show()
 \end{lstlisting}
 
-Τα αποτελέσματα της εκτέλεσης για τα 4 ερωτήματα είναι τα εξής: 
+\vspace{3mm}
 
-\VerbatimInput[frame=single, fontsize=\small]{output/output5.csv}
+Τα αποτελέσματα της εκτέλεσης για τα 4 ερωτήματα είναι τα εξής: \\
 
+\noindent\textbf{Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{year} & \textbf{average\_distance} & \textbf{\#} \\
+\hline
+2010 & 4.315547525861609 & 8213 \\
+2011 & 2.7931783031826134 & 7232 \\
+2012 & 37.401521647671 & 6550 \\
+2013 & 2.826412721201962 & 5838 \\
+2014 & 11.631025289489838 & 4230 \\
+2015 & 2.706097992762391 & 6763 \\
+2016 & 2.7176445421299724 & 8100 \\
+2017 & 5.955847913803835 & 7788 \\
+2018 & 2.732823649229879 & 7413 \\
+2019 & 2.739941972172148 & 7129 \\
+2020 & 8.614767812336167 & 8491 \\
+2021 & 30.97834129556093 & 9767 \\
+2022 & 2.6086561864507893 & 10025 \\
+2023 & 2.555141057454313 & 8741 \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{division} & \textbf{average\_distance} & \textbf{\#} \\
+\hline
+77TH STREET & 5.736614947109006 & 16546 \\
+SOUTHEAST & 9.578741738383359 & 11782 \\
+NEWTON & 9.865416685211947 & 9613 \\
+SOUTHWEST & 4.15636383556516 & 8625 \\
+HOLLENBECK & 14.994438060689776 & 6111 \\
+HARBOR & 13.360482218365267 & 5431 \\
+RAMPART & 4.098521839067684 & 4989 \\
+MISSION & 7.743899200430639 & 4153 \\
+OLYMPIC & 1.827684160849825 & 3971 \\
+NORTHEAST & 10.43910354785769 & 3846 \\
+HOLLYWOOD & 12.080122049355651 & 3551 \\
+FOOTHILL & 3.8148915583594225 & 3484 \\
+CENTRAL & 4.763802684561787 & 3466 \\
+WILSHIRE & 13.350395954999458 & 3422 \\
+NORTH HOLLYWOOD & 14.087690925056263 & 3321 \\
+WEST VALLEY & 17.084643689509413 & 2786 \\
+PACIFIC & 13.244049319509951 & 2647 \\
+VAN NUYS & 2.2172720177483716 & 2645 \\
+DEVONSHIRE & 15.049134124450779 & 2280 \\
+TOPANGA & 3.488714475764334 & 2101 \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{50mm} % Vertical space before the next title
+
+\noindent \textbf{Απόσταση από το πλησιέστερο αστυνομικό τμήμα:}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{year} & \textbf{average\_distance} & \textbf{\#} \\
+\hline
+2010 & 3.9654805060979808 & 8213 \\
+2011 & 2.4618188856645915 & 7232 \\
+2012 & 37.04806556244542 & 6550 \\
+2013 & 2.456180337945913 & 5838 \\
+2014 & 11.240705060052049 & 4230 \\
+2015 & 2.387902781763031 & 6763 \\
+2016 & 2.4291509215379383 & 8100 \\
+2017 & 5.620278866952368 & 7788 \\
+2018 & 2.4090835060969624 & 7413 \\
+2019 & 2.4301661049761196 & 7129 \\
+2020 & 8.305664894299348 & 8491 \\
+2021 & 30.666116941658995 & 9767 \\
+2022 & 2.312967928245974 & 10025 \\
+2023 & 2.2716948056968684 & 8741 \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{division} & \textbf{average\_distance} & \textbf{\#} \\
+\hline
+77TH STREET & 1.7215717802940704 & 13314 \\
+SOUTHWEST & 2.281362128260118 & 11195 \\
+SOUTHEAST & 2.210009298415925 & 10836 \\
+NEWTON & 1.5697887030696482 & 7150 \\
+WILSHIRE & 2.443640741448432 & 6227 \\
+HOLLENBECK & 103.76094896583089 & 6215 \\
+HOLLYWOOD & 2.0025711504573533 & 5328 \\
+HARBOR & 3.905879971758679 & 5305 \\
+OLYMPIC & 1.6650515588081933 & 5071 \\
+RAMPART & 1.3976311372228347 & 4677 \\
+VAN NUYS & 2.9536720802889667 & 4587 \\
+FOOTHILL & 3.612771771528315 & 4214 \\
+CENTRAL & 1.0231066779455342 & 3597 \\
+NORTH HOLLYWOOD & 2.721425990200832 & 3270 \\
+NORTHEAST & 3.7517940872523634 & 3093 \\
+WEST VALLEY & 2.7951039642375455 & 2716 \\
+MISSION & 3.8087595625812636 & 2625 \\
+PACIFIC & 3.700480667929206 & 2521 \\
+TOPANGA & 3.0254147394551283 & 2146 \\
+DEVONSHIRE & 2.9876944488748034 & 1180 \\
+\hline
+\end{tabular}
+\end{center} 
+
+
+\vspace{3\baselineskip}
 \section{hint \& explain}
 
-Εκτελέσαμε το Query 3 σε ένα for loop που επιλέγει μια διαφορετική στρατηγική join σε κάθε επανάληψη.\\
+Εκτελέσαμε το Query 3 σε ένα for loop που επιλέγει μια διαφορετική στρατηγική join σε 
+κάθε επανάληψη.
 
 \subsection*{Query 3}
 
-Τα αποτελέσματα της εκτέλεσης φαίνονται στον ακόλουθο σύνδεσμο. Ταχύτερα αποτελέσματα παρουσιάζει η στρατηγική Shuffle Hash. Αυτό συμβαίνει επειδή τα κλειδιά συγχώνευσης έχουν ανομοιογενή κατανομή, οπότε η "Shuffle Hash" μπορεί να κατανείμει τα δεδομένα πιο ομοιόμορφα σε κομμάτια, ιδίως όταν αντιμετωπίζουμε μεγάλα σύνολα δεδομένων, μειώνοντας την επίδραση της ανομοιογένειας δεδομένων και βελτιώνοντας την απόδοση.\\
+Τα αποτελέσματα της εκτέλεσης φαίνονται στον ακόλουθο σύνδεσμο. Ταχύτερα αποτελέσματα 
+παρουσιάζει η στρατηγική Shuffle Hash. Αυτό συμβαίνει επειδή τα κλειδιά συγχώνευσης έχουν 
+ανομοιογενή κατανομή, οπότε η "Shuffle Hash" μπορεί να κατανείμει τα δεδομένα πιο ομοιόμορφα σε κομμάτια, ιδίως όταν αντιμετωπίζουμε μεγάλα σύνολα δεδομένων, μειώνοντας την επίδραση της ανομοιογένειας δεδομένων και βελτιώνοντας την απόδοση.\\
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{JOIN STRATEGY} & \textbf{DURATION} \\
+\hline
+BROADCAST & 35s \\
+\hline
+MERGE & 21s \\
+\hline
+SHUFFLE HUSH & 19s \\
+\hline
+SHUFFLE REPLICATE NL & 28s \\
+\hline
+\end{tabular}
+\end{center} 
+
+\vspace{3\baselineskip}
 
 Link για το Spark UI:
 \href{http://83.212.81.191:18080/history/application_1705357398960_0018/jobs/} {Query3 Hint \& Explain}
-\begin{lstlisting}
+\begin{lstlisting}[language = Python]
     join_strategies = ["broadcast", "merge", "shuffle_hash", "shuffle_replicate_nl"]
 
     for strategy in join_strategies:
@@ -533,9 +833,11 @@ Link για το Spark UI:
         query3_hne_results.show()
 \end{lstlisting}
 
+\vspace{1\baselineskip}
+
 Στον κώδικα για το Query 3 έχουμε προσθέσει τα hint και explain.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[language = Python]
     def query3(crime_2015, data3, revgecoding, join_strategy):
 
         crime_zip = crime_2015.join(revgecoding.hint(join_strategy), ["LAT", "LON"], "left")
@@ -562,8 +864,55 @@ Link για το Spark UI:
 \subsection*{Query 4}
 
 Ο κώδικας για το Query 4 έχει συμπληρωθεί με τα απαραίτητα hint και explain. 
-Τα αποτελέσματα της εκτέλεσης φαίνονται στους ακόλουθους συνδέσμους. 
-Για το 4_1a ερώτημα καλύτερη στρατηγική για το join είναι η Merge, ενώ για το 4_1b ερώτημα είναι η Broadcast. Όσον αφορά στο 4_1a, αυτό συμβαίνει επειδή το join γίνεται με βάση το Year και τα σύνολα δεδομένων είναι σχετικά μεγάλα. Η Merge περιλαμβάνει την ταξινόμηση και στη συνέχεια τη συγχώνευση των συνόλων δεδομένων, η οποία είναι αποδοτική για μεγάλα σύνολα δεδομένων. Επιπλέον, τα δεδομένα είναι ομοιόμορφα κατανεμημένα σε κομμάτια για το κλειδί συγχώνευσης Year, καθιστώντας τη στρατηγική Merge βέλτιστη. Σχετικά με το 4_1b, ο πίνακας διαστάσεων (data5) είναι σχετικά μικρός, οπότε το Spark μπορεί να τον μεταδώσει αποδοτικά σε όλους τους κόμβους, μειώνοντας την ανάγκη για μεταφορά δεδομένων σε όλο το δίκτυο. Η μετάδοση είναι ιδιαίτερα αποδοτική όταν ένας από τους πίνακες στη συγχώνευση είναι αρκετά μικρός ώστε να χωρέσει στη μνήμη κάθε κόμβου. Επιπλέον, η στρατηγική join Broadcast είναι αποδοτική όταν πραγματοποιείται join με βάση την ισότητα (συγχώνευση σε ένα πεδίο με μοναδικές ή υψηλά επιλεκτικές τιμές), όπως στην περίπτωση του πεδίου DIVISION.\\
+Τα αποτελέσματα της εκτέλεσης φαίνονται στους ακόλουθους συνδέσμους. \\
+Για το 4\_1a ερώτημα καλύτερη στρατηγική για το join είναι η Merge, ενώ για το 4\_1b ερώτημα 
+είναι η Broadcast. Οι χρόνοι του ερωτήματος (a) είναι σημαντικά μεγαλύτεροι από αυτούς του 
+(b) διότι λόγω lazy evaluation από το spark το ερώτημα (a) εκτελεί κομμάτια κώδικα που το (b) 
+βρίσκει έτοιμο κατά την εκτέλεση του.\\
+
+\begin{center}
+(a)
+\begin{tabular}{|c|c|}
+\hline
+\textbf{JOIN STRATEGY} & \textbf{DURATION} \\
+\hline
+BROADCAST & 36s \\
+\hline
+MERGE & 35s \\
+\hline
+SHUFFLE HUSH & 36s \\
+\hline
+SHUFFLE REPLICATE NL & 52s \\
+\hline
+\end{tabular}
+\quad
+(b)
+\begin{tabular}{|c|c|}
+\hline
+\textbf{JOIN STRATEGY} & \textbf{DURATION} \\
+\hline
+BROADCAST & 14s \\
+\hline
+MERGE & 15s \\
+\hline
+SHUFFLE HUSH & 18s \\
+\hline
+SHUFFLE REPLICATE NL & 45s \\
+\hline
+\end{tabular}
+\end{center} 
+
+Όσον αφορά στο 4\_1a, αυτό συμβαίνει επειδή το join γίνεται με βάση το 
+Year και τα σύνολα δεδομένων είναι σχετικά μεγάλα. 
+Η Merge περιλαμβάνει την ταξινόμηση και στη συνέχεια τη συγχώνευση των συνόλων δεδομένων, 
+η οποία είναι αποδοτική για μεγάλα σύνολα δεδομένων. Επιπλέον, τα δεδομένα είναι ομοιόμορφα 
+κατανεμημένα σε κομμάτια για το κλειδί συγχώνευσης Year, καθιστώντας τη στρατηγική Merge 
+βέλτιστη. Σχετικά με το 4\_1b, ο πίνακας διαστάσεων (data5) είναι σχετικά μικρός, οπότε το 
+Spark μπορεί να τον μεταδώσει αποδοτικά σε όλους τους κόμβους, μειώνοντας την ανάγκη για 
+μεταφορά δεδομένων σε όλο το δίκτυο. Η μετάδοση είναι ιδιαίτερα αποδοτική όταν ένας από τους 
+πίνακες στη συγχώνευση είναι αρκετά μικρός ώστε να χωρέσει στη μνήμη κάθε κόμβου. Επιπλέον, 
+η στρατηγική join Broadcast είναι αποδοτική όταν πραγματοποιείται join με βάση την ισότητα, όπως στην περίπτωση του 
+πεδίου DIVISION.\\
 
 \href{http://83.212.81.191:18080/history/application_1705357398960_0019/jobs/} {Query 4 Broadcast}
 \href{http://83.212.81.191:18080/history/application_1705357398960_0020/jobs/} {Query 4 Merge}

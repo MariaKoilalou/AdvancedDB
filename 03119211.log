@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  16 JAN 2024 02:03
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  16 JAN 2024 03:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -710,22 +710,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 170--172
  []
 
 [3] [4] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 287--294
+Underfull \hbox (badness 10000) in paragraph at lines 288--295
 
  []
 
 [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 384--386
+Underfull \hbox (badness 10000) in paragraph at lines 385--387
 
  []
 
 
-Overfull \hbox (1.90828pt too wide) in paragraph at lines 387--394
+Overfull \hbox (1.90828pt too wide) in paragraph at lines 388--395
 []\TU/GFSDidot(0)/m/n/10 Για το ζητούμενο 6 χρησιμοποιήθηκαν επιπλέον τα δεδομένα []LAPD_Police_Stations[]. Το Query 4 υλοποιήθηκε με DataFrame/SQL
  []
 
 [8] [9] [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 556--560
+Underfull \hbox (badness 10000) in paragraph at lines 557--561
 
  []
 
@@ -781,13 +781,13 @@ braces):
 >  {english/localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {english/Localnumeral}  =>  {polyglossia@C@localnumeral}.
  [13]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 668.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 668.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 669.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 669.
  (./03119211.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 668.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 668.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 669.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 669.
 Package rerunfilecheck Info: File `03119211.out' has not changed.
-(rerunfilecheck)             Checksum: 5F07B56FCD6C9AA60EA73FE2670FE465;269.
+(rerunfilecheck)             Checksum: 20D115B86AED007A64FC31D4C3114566;304.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -796,7 +796,7 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Here is how much of TeX's memory you used:
  18822 strings out of 481772
  356937 string characters out of 5936450
- 1192167 words of memory out of 5000000
+ 1192263 words of memory out of 5000000
  35528 multiletter control sequences out of 15000+600000
  536479 words of font info for 56 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191

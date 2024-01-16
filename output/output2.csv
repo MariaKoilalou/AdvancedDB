@@ -24,7 +24,7 @@
 +----+-----+-----------+---+
 only showing top 20 rows
 
-Q1 Dataframe time: 39.15737175941467 seconds.
+Q1 Dataframe time: 0.537975549697876 seconds.
 +----+-----+-----------+---+
 |year|month|crime_total|  #|
 +----+-----+-----------+---+
@@ -51,4 +51,4 @@ Q1 Dataframe time: 39.15737175941467 seconds.
 +----+-----+-----------+---+
 only showing top 20 rows
 
-Q1 SQL time: 0.47594261169433594 seconds.
+Q1 SQL time: 0.861966609954834 seconds.

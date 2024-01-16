@@ -46,7 +46,7 @@ def query4(df, data5):
     )
 
     joined_df = df.join(data5, df["AREA"] == data5["PREC"])
-
+    
     distance_udf = udf(get_distance)
 
     distance_df = joined_df.withColumn(
@@ -66,6 +66,7 @@ def query4(df, data5):
         F.avg("DISTANCE").alias("average_distance"),
         F.count("*").alias("#")
     ).orderBy(F.desc("#")).withColumnRenamed("DIVISION", "division")
+
 
     print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
     print("(a)")

@@ -48,7 +48,7 @@ def query4(df, data5, join_strategy):
     joined_df = df.join(data5.hint(join_strategy), df["AREA"] == data5["PREC"])
 
     joined_df.explain()
-    
+
     distance_udf = udf(get_distance)
 
     distance_df = joined_df.withColumn(
@@ -71,11 +71,12 @@ def query4(df, data5, join_strategy):
 
     print("Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:")
     print("(a)")
-    query_4_1a.show() 
+    query_4_1a.show()
     print("(b)")
-    query_4_1b.show() 
+    query_4_1b.show()
 
     cross_joined_df = df.crossJoin(data5.withColumnRenamed("LAT", "Y").withColumnRenamed("LON", "X"))
+
 
     cross_joined_df = cross_joined_df.withColumn(
         "DISTANCE",
@@ -88,7 +89,7 @@ def query4(df, data5, join_strategy):
         "row_num",
         F.row_number().over(windowSpec)
     ).filter(col("row_num") == 1).drop("row_num")
-
+    
     query_4_2a = nearest_station_df.groupBy("Year").agg(
         F.avg("DISTANCE").alias("average_distance"),
         F.count("*").alias("#")
@@ -99,11 +100,10 @@ def query4(df, data5, join_strategy):
         F.count("*").alias("#")
     ).orderBy(F.desc("#")).withColumnRenamed("DIVISION", "division")
 
-
     print("Απόσταση από το πλησιέστερο αστυνομικό τμήμα:")
     print("(a)")
     query_4_2a.show()
     print("(b)")
     query_4_2b.show()
 
-    
+        

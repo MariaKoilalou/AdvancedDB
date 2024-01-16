@@ -1,0 +1,115 @@
+Executing query with shuffle_hash join strategy
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- ShuffledHashJoin [AREA#4], [PREC#129], Inner, BuildRight
+   :- Exchange hashpartitioning(AREA#4, 200), ENSURE_REQUIREMENTS, [plan_id=53]
+   :  +- Project [DR_NO#0, Date Rptd#164, DATE OCC#193, TIME OCC#3, AREA#4, AREA NAME#5, Rpt Dist No#6, Part 1-2#7, Crm Cd#8, Crm Cd Desc#9, Mocodes#10, Vict Age#11, Vict Sex#12, Vict Descent#13, Premis Cd#14, Premis Desc#15, Weapon Used Cd#16, Weapon Desc#17, Status#18, Status Desc#19, Crm Cd 1#20, Crm Cd 2#21, Crm Cd 3#22, Crm Cd 4#23, ... 5 more fields]
+   :     +- HashAggregate(keys=[Premis Cd#14, TIME OCC#3, Crm Cd 1#20, Part 1-2#7, AREA#4, DR_NO#0, DATE OCC#2, Crm Cd 4#23, Weapon Desc#17, Vict Descent#13, Status Desc#19, Premis Desc#15, Vict Age#11, Rpt Dist No#6, Date Rptd#1, Mocodes#10, LOCATION#24, Crm Cd 3#22, Vict Sex#12, Cross Street#25, LON#27, Crm Cd#8, AREA NAME#5, Crm Cd Desc#9, ... 4 more fields], functions=[])
+   :        +- Exchange hashpartitioning(Premis Cd#14, TIME OCC#3, Crm Cd 1#20, Part 1-2#7, AREA#4, DR_NO#0, DATE OCC#2, Crm Cd 4#23, Weapon Desc#17, Vict Descent#13, Status Desc#19, Premis Desc#15, Vict Age#11, Rpt Dist No#6, Date Rptd#1, Mocodes#10, LOCATION#24, Crm Cd 3#22, Vict Sex#12, Cross Street#25, LON#27, Crm Cd#8, AREA NAME#5, Crm Cd Desc#9, ... 5 more fields), ENSURE_REQUIREMENTS, [plan_id=48]
+   :           +- HashAggregate(keys=[Premis Cd#14, TIME OCC#3, Crm Cd 1#20, Part 1-2#7, AREA#4, DR_NO#0, DATE OCC#2, Crm Cd 4#23, Weapon Desc#17, Vict Descent#13, Status Desc#19, Premis Desc#15, Vict Age#11, Rpt Dist No#6, Date Rptd#1, Mocodes#10, LOCATION#24, Crm Cd 3#22, Vict Sex#12, Cross Street#25, knownfloatingpointnormalized(normalizenanandzero(LON#27)) AS LON#27, Crm Cd#8, AREA NAME#5, Crm Cd Desc#9, ... 4 more fields], functions=[])
+   :              +- Union
+   :                 :- Filter ((((isnotnull(AREA NAME#5) AND isnotnull(Weapon Used Cd#16)) AND NOT (AREA NAME#5 = Null Island)) AND (substring(cast(Weapon Used Cd#16 as string), 1, 1) = 1)) AND isnotnull(AREA#4))
+   :                 :  +- FileScan csv [DR_NO#0,Date Rptd#1,DATE OCC#2,TIME OCC#3,AREA#4,AREA NAME#5,Rpt Dist No#6,Part 1-2#7,Crm Cd#8,Crm Cd Desc#9,Mocodes#10,Vict Age#11,Vict Sex#12,Vict Descent#13,Premis Cd#14,Premis Desc#15,Weapon Used Cd#16,Weapon Desc#17,Status#18,Status Desc#19,Crm Cd 1#20,Crm Cd 2#21,Crm Cd 3#22,Crm Cd 4#23,... 4 more fields] Batched: false, DataFilters: [isnotnull(AREA NAME#5), isnotnull(Weapon Used Cd#16), NOT (AREA NAME#5 = Null Island), (substrin..., Format: CSV, Location: InMemoryFileIndex(1 paths)[hdfs://okeanos-master:54310/user/ubuntu/ta/advanced-db/data/crime_data..., PartitionFilters: [], PushedFilters: [IsNotNull(AREA NAME), IsNotNull(Weapon Used Cd), Not(EqualTo(AREA NAME,Null Island)), IsNotNull(..., ReadSchema: struct<DR_NO:string,Date Rptd:string,DATE OCC:string,TIME OCC:int,AREA:int,AREA NAME:string,Rpt D...
+   :                 +- Filter ((((isnotnull(AREA NAME#61) AND isnotnull(Weapon Used Cd#72)) AND NOT (AREA NAME#61 = Null Island)) AND (substring(cast(Weapon Used Cd#72 as string), 1, 1) = 1)) AND isnotnull(AREA#60))
+   :                    +- FileScan csv [DR_NO#56,Date Rptd#57,DATE OCC#58,TIME OCC#59,AREA#60,AREA NAME#61,Rpt Dist No#62,Part 1-2#63,Crm Cd#64,Crm Cd Desc#65,Mocodes#66,Vict Age#67,Vict Sex#68,Vict Descent#69,Premis Cd#70,Premis Desc#71,Weapon Used Cd#72,Weapon Desc#73,Status#74,Status Desc#75,Crm Cd 1#76,Crm Cd 2#77,Crm Cd 3#78,Crm Cd 4#79,... 4 more fields] Batched: false, DataFilters: [isnotnull(AREA NAME#61), isnotnull(Weapon Used Cd#72), NOT (AREA NAME#61 = Null Island), (substr..., Format: CSV, Location: InMemoryFileIndex(1 paths)[hdfs://okeanos-master:54310/user/ubuntu/ta/advanced-db/data/crime_data..., PartitionFilters: [], PushedFilters: [IsNotNull(AREA NAME), IsNotNull(Weapon Used Cd), Not(EqualTo(AREA NAME,Null Island)), IsNotNull(..., ReadSchema: struct<DR_NO:string,Date Rptd:string,DATE OCC:string,TIME OCC:int,AREA:int,AREA NAME:string,Rpt D...
+   +- Exchange hashpartitioning(PREC#129, 200), ENSURE_REQUIREMENTS, [plan_id=54]
+      +- Filter isnotnull(PREC#129)
+         +- FileScan csv [X#124,Y#125,FID#126,DIVISION#127,LOCATION#128,PREC#129] Batched: false, DataFilters: [isnotnull(PREC#129)], Format: CSV, Location: InMemoryFileIndex(1 paths)[hdfs://okeanos-master:54310/user/ubuntu/ta/advanced-db/data/LAPD_Polic..., PartitionFilters: [], PushedFilters: [IsNotNull(PREC)], ReadSchema: struct<X:double,Y:double,FID:int,DIVISION:string,LOCATION:string,PREC:int>
+
+
+Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:
+(a)
++----+------------------+-----+
+|year|  average_distance|    #|
++----+------------------+-----+
+|2010| 4.315547525861609| 8213|
+|2011|2.7931783031826174| 7232|
+|2012|37.401521647671046| 6550|
+|2013|2.8264127212019643| 5838|
+|2014|11.631025289489857| 4230|
+|2015|2.7060979927623996| 6763|
+|2016|2.7176445421299738| 8100|
+|2017| 5.955847913803795| 7788|
+|2018| 2.732823649229891| 7413|
+|2019| 2.739941972172153| 7129|
+|2020| 8.614767812336162| 8491|
+|2021|30.978341295560668| 9767|
+|2022|2.6086561864507956|10025|
+|2023|2.5551410574543225| 8741|
++----+------------------+-----+
+
+(b)
++---------------+------------------+-----+
+|       division|  average_distance|    #|
++---------------+------------------+-----+
+|    77TH STREET| 5.736614947109009|16546|
+|      SOUTHEAST|  9.57874173838335|11782|
+|         NEWTON| 9.865416685211912| 9613|
+|      SOUTHWEST| 4.156363835565159| 8625|
+|     HOLLENBECK|14.994438060689845| 6111|
+|         HARBOR|13.360482218365224| 5431|
+|        RAMPART| 4.098521839067689| 4989|
+|        MISSION| 7.743899200430629| 4153|
+|        OLYMPIC| 1.827684160849821| 3971|
+|      NORTHEAST| 10.43910354785776| 3846|
+|      HOLLYWOOD|12.080122049355655| 3551|
+|       FOOTHILL| 3.814891558359416| 3484|
+|        CENTRAL|  4.76380268456179| 3466|
+|       WILSHIRE|13.350395954999469| 3422|
+|NORTH HOLLYWOOD|14.087690925056275| 3321|
+|    WEST VALLEY| 17.08464368950938| 2786|
+|        PACIFIC|13.244049319509976| 2647|
+|       VAN NUYS|2.2172720177483725| 2645|
+|     DEVONSHIRE|15.049134124450791| 2280|
+|        TOPANGA|3.4887144757643394| 2101|
++---------------+------------------+-----+
+only showing top 20 rows
+
+Απόσταση από το πλησιέστερο αστυνομικό τμήμα:
+(a)
++----+------------------+-----+
+|year|  average_distance|    #|
++----+------------------+-----+
+|2010|3.9654805060979808| 8213|
+|2011|2.4618188856645915| 7232|
+|2012| 37.04806556244542| 6550|
+|2013| 2.456180337945913| 5838|
+|2014|11.240705060052049| 4230|
+|2015| 2.387902781763031| 6763|
+|2016|2.4291509215379383| 8100|
+|2017| 5.620278866952368| 7788|
+|2018|2.4090835060969624| 7413|
+|2019|2.4301661049761196| 7129|
+|2020| 8.305664894299348| 8491|
+|2021|30.666116941658995| 9767|
+|2022| 2.312967928245974|10025|
+|2023|2.2716948056968684| 8741|
++----+------------------+-----+
+
+(b)
++---------------+------------------+-----+
+|       division|  average_distance|    #|
++---------------+------------------+-----+
+|    77TH STREET|1.7215717802940704|13314|
+|      SOUTHWEST| 2.281362128260118|11195|
+|      SOUTHEAST| 2.210009298415925|10836|
+|         NEWTON|1.5697887030696482| 7150|
+|       WILSHIRE| 2.443640741448432| 6227|
+|     HOLLENBECK|103.76094896583089| 6215|
+|      HOLLYWOOD|2.0025711504573533| 5328|
+|         HARBOR| 3.905879971758679| 5305|
+|        OLYMPIC|1.6650515588081933| 5071|
+|        RAMPART|1.3976311372228347| 4677|
+|       VAN NUYS|2.9536720802889667| 4587|
+|       FOOTHILL| 3.612771771528315| 4214|
+|        CENTRAL|1.0231066779455342| 3597|
+|NORTH HOLLYWOOD| 2.721425990200832| 3270|
+|      NORTHEAST|3.7517940872523634| 3093|
+|    WEST VALLEY|2.7951039642375455| 2716|
+|        MISSION|3.8087595625812636| 2625|
+|        PACIFIC| 3.700480667929206| 2521|
+|        TOPANGA|3.0254147394551283| 2146|
+|     DEVONSHIRE|2.9876944488748034| 1180|
++---------------+------------------+-----+
+only showing top 20 rows
+

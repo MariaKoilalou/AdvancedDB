@@ -813,7 +813,7 @@ DEVONSHIRE & 2.9876944488748034 & 1180 \\
 \vspace{3\baselineskip}
 \section{hint \& explain}
 
-\textcolor{red}{Για την εκτέλεση κάνουμε  /scripts/query3_join.py}.  \\
+\textcolor{red}{Για την εκτέλεση κάνουμε  spark\-submit /scripts/query3_join.py}.  \\
 \textcolor{red}{Το output βρίσκεται στο /output/output6.py}. Έκει βρίσκεται και το Plan που εκτυπώνει το .explain() το οποίο όμως δεν είναι το Final Plan. \\ 
 Εκτελέσαμε το Query 3 σε ένα for loop που επιλέγει μια διαφορετική στρατηγική join σε 
 κάθε επανάληψη.
@@ -883,7 +883,7 @@ Link για το Spark UI:
 
 \subsection*{Query 4}
 
-\textcolor{red}{Για την εκτέλεση κάνουμε  /scripts/query4_broadcast.py}, \textcolor{red}{/scripts/query4_merge.py}, \textcolor{red}{/scripts/query4_shuffle_hush.py}, \textcolor{red}{/scripts/query4_shuffle_replicate_nl.py}. Αντίστοιχα για κάθε join strategy.   \\
+\textcolor{red}{Για την εκτέλεση κάνουμε   spark\-submit /scripts/query4_broadcast.py}, \textcolor{red}{/scripts/query4_merge.py}, \textcolor{red}{/scripts/query4_shuffle_hush.py}, \textcolor{red}{/scripts/query4_shuffle_replicate_nl.py}. Αντίστοιχα για κάθε join strategy.   \\
 \textcolor{red}{Το output βρίσκεται από το /output/output7.py μέχρι το /output/output10.py}. Έκει βρίσκονται και τα Plans που εκτυπώνει το .explain() τα οποία όμως δεν είναι τα Final Plans. \\ 
 
 Ο κώδικας για το Query 4 έχει συμπληρωθεί με τα απαραίτητα hint και explain. 

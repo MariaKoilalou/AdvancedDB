@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  16 JAN 2024 23:45
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2023.11.22)  18 JAN 2024 19:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -715,7 +715,7 @@ LaTeX Font Warning: Font shape `TU/GFSDidot(0)/m/it' undefined
 
 
 LaTeX Font Warning: Font shape `TU/GFSDidot(0)/b/n' undefined
-(Font)              using `TU/GFSDidot(0)/m/n' instead on input line 67.
+(Font)              using `TU/GFSDidot(0)/m/n' instead on input line 70.
 
 (/usr/share/texlive/texmf-dist/tex/generic/stringenc/se-ascii-print.def
 File: se-ascii-print.def 2019/11/29 v1.12 stringenc: Printable ASCII characters
@@ -724,56 +724,86 @@ File: lstlang1.sty 2019/09/10 1.8c listings language file
 ) [1
 
 ] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 177--179
+Underfull \hbox (badness 10000) in paragraph at lines 189--193
 
  []
 
-[3] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 394--401
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 311--313
 
  []
 
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 483--485
+[4] [5]
+Underfull \hbox (badness 10000) in paragraph at lines 407--416
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 554--556
+Underfull \hbox (badness 10000) in paragraph at lines 498--500
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 569--573
 
  []
 
 [7] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 686--687
+Underfull \hbox (badness 10000) in paragraph at lines 703--704
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 803--806
+Underfull \hbox (badness 10000) in paragraph at lines 705--706
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 838--839
+Underfull \hbox (badness 10000) in paragraph at lines 818--820
 
  []
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 866--872
+Underfull \hbox (badness 10000) in paragraph at lines 822--827
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 905--916
+Underfull \hbox (badness 10000) in paragraph at lines 828--831
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 917--921
+Underfull \hbox (badness 10000) in paragraph at lines 864--865
 
  []
 
-[11] [12]
+
+Overfull \hbox (5.21355pt too wide) in paragraph at lines 892--895
+[][]\TU/GFSDidot(0)/b/n/10 Για την εκτέλεση κάνουμε   spark-submit[] []/scripts/query4_broadcast.py[], []/scripts/query4_merge.py[], []/scripts/query4_shuffle_hush.py[],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 892--895
+
+ []
+
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 896--902
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 903--907
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 951--957
+
+ []
+
+[12] [13]
 The property list \polyglossia@langsetup contains the pairs (without outer
 braces):
 >  {latex/script}  =>  {latin}
@@ -824,12 +854,12 @@ braces):
 >  {english/babelname}  =>  {american}
 >  {english/localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {english/Localnumeral}  =>  {polyglossia@C@localnumeral}.
- [13]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1029.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1029.
+ [14]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1067.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1067.
  (./03119211.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 1029.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1029.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 1067.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1067.
 Package rerunfilecheck Info: File `03119211.out' has not changed.
 (rerunfilecheck)             Checksum: DB1B26C45B453A6BA6ACD07D1A18AAF0;359.
 
@@ -838,12 +868,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 18867 strings out of 481772
- 357610 string characters out of 5936450
- 1223095 words of memory out of 5000000
- 35573 multiletter control sequences out of 15000+600000
+ 18828 strings out of 481772
+ 357194 string characters out of 5936450
+ 1208153 words of memory out of 5000000
+ 35534 multiletter control sequences out of 15000+600000
  536714 words of font info for 58 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 65i,7n,100p,837b,1816s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 65i,7n,100p,837b,1873s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on 03119211.pdf (13 pages).
+Output written on 03119211.pdf (14 pages).

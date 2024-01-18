@@ -64,7 +64,11 @@
 
 \vspace{3\baselineskip}
 
+Όλα τα αρχεία υπάρχουν στο GitHub στο link: 
+\href{https://github.com/MariaKoilalou/AdvancedDB}{GitHub Repository}
+
 \section{Εγκατάσταση Apache Spark}
+
 Για την εγκατάσταση του Apache Spark ώστε να εκτελείται πάνω από το διαχειριστή πόρων του Apache Hadoop και YARN,
 δημιουργήσαμε δύο Virtual Machines στην πλατφόρμα okeanos-knossos ακολουθώντας τις οδηγίες που μας δόθηκαν.
 Οι web εφαρμογές είναι προσβάσιμες και διαμορφωμένες σύμφωνα με τις οδηγίες στα παρακάτων links: 
@@ -77,7 +81,7 @@
 
 
 \section*{Spark Session}
-\textcolor{red}{Ο κώδικας βρίσκεται στο  /scripts/session.py}
+\textcolor{red}{Ο κώδικας βρίσκεται στο  /scripts/session.py} \\
 Αρχικά, υλοποιήθηκε μια συνάρτηση που δημιουργεί ένα Spark Session και δέχεται ως όρισμα τον αριθμό των executors.
 
 \begin{lstlisting}[language = Python]
@@ -300,14 +304,12 @@ Link για το Spark UI:
 \end{tabular}
 \end{center}
 
-\vspace{4\baselineskip}
+\vspace{2\baselineskip}
 
 
 \section{Query 2}
 \textcolor{red}{Ο κώδικας για την εκτέλεση του query βρίσκεται στο  /scripts/queries/query2.py το οποίο καλεί η main κατά την εκτέλεση της} \\
 \textcolor{red}{Το output του query 2 βρίσκεται στο /output/output3.py} \\
-
-\vspace{1\baselineskip}
 
 \subsection*{DataFrame\textbackslash SQL  API}
 
@@ -398,15 +400,12 @@ Link για το Spark UI:
 
 \end{center}
 
-\vspace{1\baselineskip}
+\vspace{4\baselineskip}
 
 \section{Query 3}
 
-Για να τρέξουμε τον κώδικα εκτελούμε  \textcolor{blue}{spark\-submit /scripts/query3_join.py} . \\
-\textcolor{red}{Ο κώδικας βρίσκεται στο  /scripts/query3_hne.py} \\
+\textcolor{red}{Ο κώδικας βρίσκεται στο  /scripts/queries/query3.py, το οποίο καλεί η main κατά την εκτέλεση της.}
 \textcolor{red}{Το output του query 3 βρίσκεται στο /output/output4.py} \\
-Έτσι εκτελείται το query 3 για τις 4 διαφορετικές στρατιγηκές join και μπορούμε να παρατηρήσουμε τα αποτελέσματα του στο UI του Spark. \\
-
 Link για το Spark UI: 
 \href{http://83.212.81.191:18080/history/application_1705357398960_0014/jobs/} {Query3: Exec 2} 
 \href{http://83.212.81.191:18080/history/application_1705357398960_0015/jobs/} {Query3: Exec 3} 
@@ -472,7 +471,7 @@ Link για το Spark UI:
 
 Έπειτα υλοποιήθηκε το Query 3 χρησιμοποιώντας DataFrame/ SQL API. 
 
-\begin{lstlisting}
+\begin{lstlisting}[language = Python]
     def query3 (crime_2015, data3, revgecoding):
 
         crime_zip = crime_2015.join(revgecoding, ["LAT", "LON"], "left")
@@ -519,7 +518,7 @@ American Indian/Alaskan Native & 1 \\
 \multicolumn{2}{|c|}{Q3 time: 12.225924015045166 seconds} \\
 \hline
 \end{tabular}
-\hspace{5mm} % Space between tables
+\hspace{3mm} % Space between tables
 \begin{tabular}[t]{|c|c|}
 \hline
 \textbf{Vict Descent} & \textbf{count} \\
@@ -563,11 +562,11 @@ American Indian/Alaskan Native & 1 \\
 \end{tabular}
 \end{center}
 
-\vspace{3mm}
+\vspace{3cm}
 
 \section{Query 4}
 
-\textcolor{red}{Ο κώδικας για την εκτέλεση του query βρίσκεται στο  /scripts/queries/query4.py το οποίο καλεί η main κατά την εκτέλεση της} //
+\textcolor{red}{Ο κώδικας για την εκτέλεση του query βρίσκεται στο  /scripts/queries/query4.py το οποίο καλεί η main κατά την εκτέλεση της.} \\
 \textcolor{red}{Το output του query 4 βρίσκεται στο /output/output5.py} \\
 Link για το Spark UI: 
 \href{http://83.212.81.191:18080/history/application_1705357398960_0017/jobs/} {Query 4} \\
@@ -597,7 +596,7 @@ Link για το Spark UI:
     
 \vspace{5mm}
 
-\begin{lstlisting}{language = Python}
+\begin{lstlisting}[language = Python]
     def query4(df, data5):
 
         def haversine(lat1, lon1, lat2, lon2):
@@ -699,13 +698,14 @@ Link για το Spark UI:
         query_4_2b.show()
 \end{lstlisting}
 
-\vspace{3mm}
+\vspace{5cm}
 
 Τα αποτελέσματα της εκτέλεσης για τα 4 ερωτήματα είναι τα εξής: \\
 
-\noindent\textbf{Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:}
+\noindent\textbf{Απόσταση από το αστυνομικό τμήμα που ανέλαβε την έρευνα για το περιστατικό:} \\
 
 \begin{center}
+(a)
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{year} & \textbf{average\_distance} & \textbf{\#} \\
@@ -727,6 +727,7 @@ Link για το Spark UI:
 \hline
 \end{tabular}
 \quad
+(b)
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{division} & \textbf{average\_distance} & \textbf{\#} \\
@@ -755,11 +756,12 @@ TOPANGA & 3.488714475764334 & 2101 \\
 \end{tabular}
 \end{center}
 
-\vspace{50mm} % Vertical space before the next title
+\vspace{5mm} % Vertical space before the next title
 
 \noindent \textbf{Απόσταση από το πλησιέστερο αστυνομικό τμήμα:}
 
 \begin{center}
+(a)
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{year} & \textbf{average\_distance} & \textbf{\#} \\
@@ -781,6 +783,7 @@ TOPANGA & 3.488714475764334 & 2101 \\
 \hline
 \end{tabular}
 \quad
+(b)
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{division} & \textbf{average\_distance} & \textbf{\#} \\
@@ -812,17 +815,22 @@ DEVONSHIRE & 2.9876944488748034 & 1180 \\
 
 \vspace{3\baselineskip}
 \section{hint \& explain}
-
-\textcolor{red}{Για την εκτέλεση κάνουμε  spark\-submit /scripts/query3_join.py}.  \\
-\textcolor{red}{Το output βρίσκεται στο /output/output6.py}. Έκει βρίσκεται και το Plan που εκτυπώνει το .explain() το οποίο όμως δεν είναι το Final Plan. \\ 
-Εκτελέσαμε το Query 3 σε ένα for loop που επιλέγει μια διαφορετική στρατηγική join σε 
-κάθε επανάληψη.
-
+Προσαρμώσαμε τους κώδικες για το Query 3 και το Query 4 ώστε να χρησιμοποιούν την τεχνική hint \& explain η οποία μας εκτυπώνει το Plan που ακολουθείται για την εκτέλεση του join. \\
+Αυτό βέβαια λόγω lazy evaluation δεν είναι final αφού το final plan είναι εκείνο που εκτελείται κατά τη διάρκει του \textcolor{blue}{.show()}. Το οποίο βρίσκουμε στο UI του Spark. \\
 \subsection*{Query 3}
+
+\textcolor{red}{Για την εκτέλεση κάνουμε  spark-submit /scripts/query3\_join.py}.  \\
+\textcolor{red}{Το output βρίσκεται στο /output/output6.py}. \\
+Έκει βρίσκεται και το Plan που εκτυπώνει το .explain() το οποίο όμως δεν είναι το Final Plan. \\ 
+Εκτελέσαμε το Query 3 σε ένα for loop που επιλέγει μια διαφορετική στρατηγική join σε 
+κάθε επανάληψη. \\
 
 Τα αποτελέσματα της εκτέλεσης φαίνονται στον ακόλουθο σύνδεσμο. Ταχύτερα αποτελέσματα 
 παρουσιάζει η στρατηγική Shuffle Hash. Αυτό συμβαίνει επειδή τα κλειδιά συγχώνευσης έχουν 
 ανομοιογενή κατανομή, οπότε η "Shuffle Hash" μπορεί να κατανείμει τα δεδομένα πιο ομοιόμορφα σε κομμάτια, ιδίως όταν αντιμετωπίζουμε μεγάλα σύνολα δεδομένων, μειώνοντας την επίδραση της ανομοιογένειας δεδομένων και βελτιώνοντας την απόδοση.\\
+
+Link για το Spark UI:
+\href{http://83.212.81.191:18080/history/application_1705357398960_0018/jobs/} {Query3 Hint \& Explain}
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -842,8 +850,6 @@ SHUFFLE REPLICATE NL & 28s \\
 
 \vspace{3\baselineskip}
 
-Link για το Spark UI:
-\href{http://83.212.81.191:18080/history/application_1705357398960_0018/jobs/} {Query3 Hint \& Explain}
 \begin{lstlisting}[language = Python]
     join_strategies = ["broadcast", "merge", "shuffle_hash", "shuffle_replicate_nl"]
 
@@ -883,11 +889,17 @@ Link για το Spark UI:
 
 \subsection*{Query 4}
 
-\textcolor{red}{Για την εκτέλεση κάνουμε   spark\-submit /scripts/query4_broadcast.py}, \textcolor{red}{/scripts/query4_merge.py}, \textcolor{red}{/scripts/query4_shuffle_hush.py}, \textcolor{red}{/scripts/query4_shuffle_replicate_nl.py}. Αντίστοιχα για κάθε join strategy.   \\
-\textcolor{red}{Το output βρίσκεται από το /output/output7.py μέχρι το /output/output10.py}. Έκει βρίσκονται και τα Plans που εκτυπώνει το .explain() τα οποία όμως δεν είναι τα Final Plans. \\ 
+\textcolor{red}{Για την εκτέλεση κάνουμε   spark-submit} \textcolor{brown}{ /scripts/query4\_broadcast.py}, \textcolor{blue}{ /scripts/query4\_merge.py},  \textcolor{orange}{ /scripts/query4\_shuffle\_hush.py}, \textcolor{purple}{ /scripts/query4\_shuffle\_replicate\_nl.py} αντίστοιχα για κάθε join strategy.   \\
+\textcolor{red}{Το output βρίσκεται από το /output/output7.py μέχρι το /output/output10.py}. \\
+Έκει βρίσκονται και τα Plans που εκτυπώνει το .explain() τα οποία όμως δεν είναι τα Final Plans. \\ 
 
-Ο κώδικας για το Query 4 έχει συμπληρωθεί με τα απαραίτητα hint και explain. 
-Τα αποτελέσματα της εκτέλεσης φαίνονται στους ακόλουθους συνδέσμους. \\
+Ο κώδικας για το Query 4 έχει συμπληρωθεί με τα απαραίτητα hint και explain.
+Τα αποτελέσματα της εκτέλεσης φαίνονται στους ακόλουθους συνδέσμους: \\
+\href{http://83.212.81.191:18080/history/application_1705357398960_0019/jobs/} {Query 4 Broadcast}
+\href{http://83.212.81.191:18080/history/application_1705357398960_0020/jobs/} {Query 4 Merge}
+\href{http://83.212.81.191:18080/history/application_1705357398960_0021/jobs/} {Query 4 Shuffle Hush}
+\href{http://83.212.81.191:18080/history/application_1705357398960_0023/jobs/} {Query 4 Shuffle Replicate} \\
+
 Για το 4\_1a ερώτημα καλύτερη στρατηγική για το join είναι η Merge, ενώ για το 4\_1b ερώτημα 
 είναι η Broadcast. Οι χρόνοι του ερωτήματος (a) είναι σημαντικά μεγαλύτεροι από αυτούς του 
 (b) διότι λόγω lazy evaluation από το spark το ερώτημα (a) εκτελεί κομμάτια κώδικα που το (b) 
@@ -925,22 +937,24 @@ SHUFFLE REPLICATE NL & 45s \\
 \end{tabular}
 \end{center} 
 
+\vspace{3mm}
+
 Όσον αφορά στο 4\_1a, αυτό συμβαίνει επειδή το join γίνεται με βάση το 
 Year και τα σύνολα δεδομένων είναι σχετικά μεγάλα. 
 Η Merge περιλαμβάνει την ταξινόμηση και στη συνέχεια τη συγχώνευση των συνόλων δεδομένων, 
 η οποία είναι αποδοτική για μεγάλα σύνολα δεδομένων. Επιπλέον, τα δεδομένα είναι ομοιόμορφα 
 κατανεμημένα σε κομμάτια για το κλειδί συγχώνευσης Year, καθιστώντας τη στρατηγική Merge 
-βέλτιστη. Σχετικά με το 4\_1b, ο πίνακας διαστάσεων (data5) είναι σχετικά μικρός, οπότε το 
+βέλτιστη. 
+
+\vspace{3mm}
+
+Σχετικά με το 4\_1b, ο πίνακας διαστάσεων \textcolor{blue}{data5} είναι σχετικά μικρός, οπότε το 
 Spark μπορεί να τον μεταδώσει αποδοτικά σε όλους τους κόμβους, μειώνοντας την ανάγκη για 
 μεταφορά δεδομένων σε όλο το δίκτυο. Η μετάδοση είναι ιδιαίτερα αποδοτική όταν ένας από τους 
 πίνακες στη συγχώνευση είναι αρκετά μικρός ώστε να χωρέσει στη μνήμη κάθε κόμβου. Επιπλέον, 
 η στρατηγική join Broadcast είναι αποδοτική όταν πραγματοποιείται join με βάση την ισότητα, όπως στην περίπτωση του 
-πεδίου DIVISION.\\
+πεδίου \textcolor{blue}{DIVISION}.\\
 
-\href{http://83.212.81.191:18080/history/application_1705357398960_0019/jobs/} {Query 4 Broadcast}
-\href{http://83.212.81.191:18080/history/application_1705357398960_0020/jobs/} {Query 4 Merge}
-\href{http://83.212.81.191:18080/history/application_1705357398960_0021/jobs/} {Query 4 Shuffle Hush}
-\href{http://83.212.81.191:18080/history/application_1705357398960_0023/jobs/} {Query 4 Shuffle Replicate} \\
 
 \begin{lstlisting}[language = Python]
     def query4(df, data5, join_strategy):
@@ -1048,5 +1062,6 @@ Spark μπορεί να τον μεταδώσει αποδοτικά σε όλο
 \end{lstlisting}
 
 
+Ο φάκελος \textcolor{blue}{scripts} περιλαμβάνει όλους τους κώδικες που χρησιμοποιήθηκαν, ενώ ο φάκελος \textcolor{blue}{output} όλα τα captured outputs κατά την διάρκεια εκτέλεσης των \textcolor{red}{spark-submit}.
 
 \end{document}
